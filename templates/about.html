@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+
+<h1>About this project</h1>
+
+<section class="card">
+    <h2>Purpose</h2>
+    <p>
+        A decision-support application that estimates the risk of student dropout
+        so staff can offer help earlier. It is a machine-learning project first:
+        the web interface delivers a trained, evaluated model.
+    </p>
+</section>
+
+<section class="card">
+    <h2>Machine-learning approach</h2>
+    <ul>
+        <li>
+            <strong>Dataset:</strong> "Predict Students' Dropout and Academic Success"
+            (UCI Machine Learning Repository, id 697; Realinho et al., 2022; CC BY 4.0):
+            4,424 students of a Portuguese higher-education institution, 36 features,
+            outcome Dropout, Enrolled or Graduate.
+        </li>
+
+        <li>
+            <strong>Prediction problem:</strong> binary. Dropout = 1; Graduate and
+            Enrolled = 0. "Enrolled" students have not yet finished, so they are
+            treated as not (yet) dropped out.
+        </li>
+
+        <li>
+            <strong>Pipeline:</strong> feature engineering (approval rates, grade
+            and approval change between semesters), median/most-frequent imputation,
+            scaling, one-hot encoding, then the classifier, all serialized as one
+            scikit-learn pipeline reused for form and CSV predictions.
+        </li>
+
+        <li>
+            <strong>Models compared:</strong> logistic regression, decision tree,
+            random forest, gradient boosting, by 5-fold cross-validation on the
+            training split; selection by F1 for the dropout class (ROC-AUC as
+            tie-break). Metrics are reported once on a 20% held-out test set.
+        </li>
+
+        <li>
+            <strong>Explanations:</strong> global permutation importance and a
+            per-student occlusion analysis. They describe the model, not causes.
+        </li>
+    </ul>
+</section>
+
+<section class="card">
+    <h2>Limitations and ethics</h2>
+    <ul>
+        <li>
+            The data come from one institution and period; performance on other
+            populations is unknown and may be lower.
+        </li>
+
+        <li>
+            Predictions use first- and second-semester results, so they are most
+            useful after the first year begins.
+        </li>
+
+        <li>
+            The dataset includes demographic attributes. The model page shows a
+            group check, but that does not make the model free of bias.
+        </li>
+
+        <li>
+            Risk levels (low below {{ low_pct }}%, medium below {{ med_pct }}%)
+            are communication thresholds, not universal standards.
+        </li>
+
+        <li>
+            Never use a prediction to expel, suspend, penalise, deny admission or
+            make disciplinary decisions. Use it to start a supportive conversation.
+        </li>
+    </ul>
+</section>
+
+<section class="card">
+    <h2>About the Developer</h2>
+
+    <p>
+        <strong>Dipesh Vishnu Bante</strong> is a final-year Bachelor of Engineering
+        (B.E.) student with a background in Computer Engineering and a strong
+        interest in Data Science, Machine Learning and Artificial Intelligence.
+    </p>
+
+    <p>
+        His academic and project work focuses on applying programming, data analysis
+        and machine-learning techniques to build practical software applications.
+        He is particularly interested in developing data-driven systems that can
+        transform real-world data into useful insights and intelligent predictions.
+    </p>
+
+    <p>
+        This project reflects that approach by combining machine learning,
+        statistical evaluation and a production-oriented web application into a
+        single decision-support platform.
+    </p>
+</section>
+
+<section class="card">
+    <h2>Education</h2>
+
+    <dl class="kv">
+        <dt>Degree</dt>
+        <dd>Bachelor of Engineering (B.E.)</dd>
+
+        <dt>Branch</dt>
+        <dd>Computer Engineering</dd>
+
+        <dt>Academic Level</dt>
+        <dd>Final Year</dd>
+
+        <dt>Primary Interests</dt>
+        <dd>Data Science, Machine Learning, Artificial Intelligence</dd>
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Technical Skills</h2>
+
+    <ul>
+        <li>
+            <strong>Programming:</strong>
+            Python, SQL
+        </li>
+
+        <li>
+            <strong>Data Science:</strong>
+            Pandas, NumPy, Data Cleaning, Exploratory Data Analysis,
+            Feature Engineering, Statistics and Probability
+        </li>
+
+        <li>
+            <strong>Machine Learning:</strong>
+            Scikit-learn, Supervised Learning, Classification,
+            Regression, Model Evaluation, Cross-Validation,
+            Hyperparameter Tuning
+        </li>
+
+        <li>
+            <strong>Deep Learning & AI:</strong>
+            Neural Networks, TensorFlow, PyTorch, CNN,
+            Natural Language Processing and Generative AI fundamentals
+        </li>
+
+        <li>
+            <strong>Web Development:</strong>
+            Flask, FastAPI, REST APIs, Jinja2, HTML, CSS and JavaScript
+        </li>
+
+        <li>
+            <strong>Databases:</strong>
+            SQL, SQLite, PostgreSQL, SQLAlchemy and Alembic
+        </li>
+
+        <li>
+            <strong>Deployment & Tools:</strong>
+            Git, GitHub, Docker, Gunicorn, Render and pytest
+        </li>
+
+        <li>
+            <strong>Machine Learning Engineering:</strong>
+            Model Serialization, ML Pipelines, Data Preprocessing,
+            Model Deployment and API-based Prediction Systems
+        </li>
+    </ul>
+</section>
+
+<section class="card">
+    <h2>Developer</h2>
+
+    <dl class="kv">
+        <dt>Name</dt>
+        <dd>{{ cfg.DEVELOPER_NAME }}</dd>
+
+        <dt>Email</dt>
+        <dd>
+            <a href="mailto:{{ cfg.DEVELOPER_EMAIL }}">
+                {{ cfg.DEVELOPER_EMAIL }}
+            </a>
+        </dd>
+
+        <dt>GitHub</dt>
+        <dd>
+            <a href="https://github.com/dipeshvbante31"
+               target="_blank"
+               rel="noopener noreferrer">
+                github.com/dipeshvbante31
+            </a>
+        </dd>
+
+        <dt>Instagram</dt>
+        <dd>
+            <a href="{{ cfg.DEVELOPER_INSTAGRAM }}"
+               target="_blank"
+               rel="noopener noreferrer">
+                {{ cfg.DEVELOPER_INSTAGRAM }}
+            </a>
+        </dd>
+    </dl>
+</section>
+
+<section class="card">
+    <h2>Technology</h2>
+
+    <p>
+        Python 3.12, Flask, Jinja2, SQLAlchemy and Alembic
+        (SQLite for development, PostgreSQL in production), pandas, NumPy,
+        scikit-learn, joblib, Gunicorn, Pytest, plain HTML, CSS and JavaScript.
+    </p>
+</section>
+
+{% endblock %}

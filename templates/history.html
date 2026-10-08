@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "_macros.html" import empty %}
+{% block title %}Batch history{% endblock %}
+{% block content %}
+<div class="head-row"><h1>Batch prediction history</h1><a class="btn" href="{{ url_for('batch.upload') }}">New batch</a></div>
+{% if page.total == 0 %}{{ empty('No CSV prediction batches have been uploaded.', 'Upload a CSV', url_for('batch.upload')) }}{% else %}
+<div class="table-wrap"><table>
+  <thead><tr><th>#</th><th>File</th><th>Date</th><th>Rows</th><th>Predicted / rejected</th><th>Risk summary (H / M / L)</th><th>Model version</th><th>Status</th><th></th></tr></thead>
+  <tbody>{% for b in page.items %}{% set c = summaries[b.id] %}<tr>
+    <td>{{ b.id }}</td><td><a href="{{ url_for('batch.results', batch_id=b.id) }}">{{ b.filename }}</a></td><td>{{ b.created_at|dt }}</td><td>{{ b.total_rows }}</td>
+    <td>{{ b.valid_rows }} / {{ b.rejected_rows }}</td><td>{{ c.get('HIGH',0) }} / {{ c.get('MEDIUM',0) }} / {{ c.get('LOW',0) }}</td>
+    <td>{{ b.model_version.version }}</td><td><span class="badge badge-{{ 'low' if b.status=='completed' else 'high' }}">{{ b.status }}</span></td>
+    <td><form method="post" action="{{ url_for('batch.delete', batch_id=b.id) }}" class="inline" data-confirm="Delete this batch and its predictions? Student records are kept."><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-sm btn-danger" type="submit">Delete</button></form></td></tr>{% endfor %}</tbody>
+</table></div>
+{% include "_pager.html" %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}CSV batch prediction{% endblock %}
+{% block content %}
+<h1>CSV batch prediction</h1>
+<ol class="steps">
+  <li><a href="{{ url_for('batch.template') }}">Download the CSV template</a> (generated from the production model's feature schema).</li>
+  <li>Fill in one row per student. <code>student_id</code> is optional; every other column is required.</li>
+  <li>Validate first (nothing is saved) or validate and predict. Results are stored and can be downloaded.</li>
+</ol>
+<form method="post" enctype="multipart/form-data" class="card form" data-loading="Validating and predicting...">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>CSV file (max {{ max_mb }} MB, {{ max_rows }} rows)<input type="file" name="file" accept=".csv,text/csv" required></label>
+  <div class="actions">
+    <button class="btn" type="submit" name="mode" value="predict">Validate and predict</button>
+    <button class="btn btn-outline" type="submit" name="mode" value="validate">Validate only</button>
+  </div>
+  <small>Files are processed in memory and are not kept; only validated records and predictions are saved. Comma or semicolon delimited, UTF-8.</small>
+</form>
+
+{% if parsed %}
+<section class="card {{ 'danger' if parsed.file_errors }}">
+  <h2>Validation report for {{ filename }}</h2>
+  {% if parsed.file_errors %}
+    <p><strong>The file was rejected.</strong> Fix the following and upload again:</p>
+    <ul>{% for e in parsed.file_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  {% else %}
+    <p>{{ parsed.rows|length }} of {{ parsed.total }} rows are valid{% if warn_rows %}; {{ warn_rows }} contain values outside the training range (accepted, flagged){% endif %}. {{ parsed.rejected|length }} rows would be rejected. Nothing has been saved. Upload again with <em>Validate and predict</em> to run the model; rejected rows are never predicted or altered.</p>
+  {% endif %}
+  {% if parsed.rejected %}
+  <h3>Rejected rows</h3>
+  <div class="table-wrap"><table><thead><tr><th>Row</th><th>Student ID</th><th>Problems</th></tr></thead>
+  <tbody>{% for r in parsed.rejected[:50] %}<tr><td>{{ r.row }}</td><td>{{ r.student_id or '-' }}</td><td>{{ r.errors|join('; ') }}</td></tr>{% endfor %}</tbody></table></div>
+  {% if parsed.rejected|length > 50 %}<p class="muted">Showing 50 of {{ parsed.rejected|length }} rejected rows.</p>{% endif %}
+  {% endif %}
+  {% if preview %}
+  <h3>Preview of valid rows (first {{ preview|length }})</h3>
+  <div class="table-wrap"><table><thead><tr><th>Row</th><th>Student ID</th><th>Course</th><th>Age</th><th>2nd sem approved</th><th>Warnings</th></tr></thead>
+  <tbody>{% for r in preview %}<tr><td>{{ r.row }}</td><td>{{ r.ref or 'auto' }}</td><td>{{ course_names.get(r.features.course, r.features.course) }}</td><td>{{ r.features.age_at_enrollment }}</td><td>{{ r.features.curricular_units_2nd_sem_approved }}</td><td>{{ r.warnings|length or '-' }}</td></tr>{% endfor %}</tbody></table></div>
+  {% endif %}
+</section>
+{% endif %}
+
+<details class="card"><summary>Required columns ({{ required|length }})</summary>
+  <p><code>{{ required|join(', ') }}</code></p>
+  <p class="muted">Header names are matched after normalising case, spaces and punctuation, so the original UCI headers also work (without the Target column). Rules: missing, empty or non-numeric values are rejected; coded and yes/no fields must use values seen in training; whole-number fields must be integers; values outside valid ranges are rejected; values merely outside the training range are accepted and flagged; a repeated student_id in one file is rejected. Rows are never silently changed or imputed.</p>
+</details>
+{% endblock %}

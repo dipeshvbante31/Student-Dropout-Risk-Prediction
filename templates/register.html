@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<section class="narrow">
+  <h1>Create an account</h1>
+  <form method="post" class="card form" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Name<input name="name" value="{{ name or '' }}" required maxlength="120" autocomplete="name"></label>
+    <label>Email<input type="email" name="email" value="{{ email or '' }}" required autocomplete="username"></label>
+    <label>Password<input type="password" name="password" required minlength="10" autocomplete="new-password"><small>At least 10 characters, with letters and digits.</small></label>
+    <button class="btn" type="submit">Create account</button>
+  </form>
+  <p>Already registered? <a href="{{ url_for('auth.login') }}">Sign in</a>. The first account created on a new installation becomes the administrator.</p>
+</section>
+{% endblock %}

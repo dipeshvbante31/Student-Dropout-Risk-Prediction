@@ -1,0 +1,15 @@
+{% macro badge(level) %}<span class="badge badge-{{ level|lower }}">{{ level }}</span>{% endmacro %}
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endmacro %}
+{% macro chart(id, kind, data, unit='', title='') %}
+<figure class="chart-box">
+  {% if title %}<figcaption>{{ title }}</figcaption>{% endif %}
+  <div class="chart" data-chart="{{ kind }}" data-source="{{ id }}" data-unit="{{ unit }}" role="img" aria-label="{{ title }}"></div>
+  <script type="application/json" id="{{ id }}">{{ data|tojson }}</script>
+</figure>
+{% endmacro %}
+{% macro stat(label, value, note='') %}
+<div class="stat"><div class="stat-label">{{ label }}</div><div class="stat-value">{{ value }}</div>{% if note %}<div class="stat-note">{{ note }}</div>{% endif %}</div>
+{% endmacro %}
+{% macro empty(msg, link_text='', link='') %}
+<div class="empty"><p>{{ msg }}</p>{% if link %}<a class="btn" href="{{ link }}">{{ link_text }}</a>{% endif %}</div>
+{% endmacro %}

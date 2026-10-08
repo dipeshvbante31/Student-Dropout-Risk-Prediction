@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Cookies{% endblock %}
+{% block content %}
+<h1>Cookie policy</h1>
+<section class="card"><p>This application uses only one cookie and no advertising or tracking cookies.</p>
+<div class="table-wrap"><table><thead><tr><th>Name</th><th>Purpose</th><th>Lifetime</th></tr></thead>
+<tbody><tr><td><code>session</code></td><td>Signed session cookie that keeps you signed in and carries the CSRF protection token. HttpOnly, SameSite=Lax{{ ', Secure' if cfg.SESSION_COOKIE_SECURE }}.</td><td>Up to 8 hours, or until you log out.</td></tr></tbody></table></div>
+<p>Your light/dark theme choice is stored in your browser's local storage (not a cookie) and never sent to the server.</p></section>
+{% endblock %}

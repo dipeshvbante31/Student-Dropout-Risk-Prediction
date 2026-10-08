@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Model unavailable{% endblock %}
+{% block content %}
+<section class="narrow">
+  <h1>Production model is currently unavailable</h1>
+  <p class="lead">The trained model could not be loaded, so predictions are disabled. No substitute results are shown.</p>
+  <p>An administrator should run <code>python ml/train.py</code> or check the <code>MODEL_DIR</code> setting, then restart the application. The technical error is in the server log.</p>
+</section>
+{% endblock %}

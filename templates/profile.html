@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<h1>Profile</h1>
+<div class="grid-2">
+  <section class="card">
+    <h2>Account</h2>
+    <dl class="kv"><dt>Name</dt><dd>{{ current_user.name }}</dd><dt>Email</dt><dd>{{ current_user.email }}</dd><dt>Role</dt><dd>{{ 'Administrator' if current_user.is_admin else 'Staff / Analyst' }}</dd><dt>Created</dt><dd>{{ current_user.created_at|dt }}</dd></dl>
+  </section>
+  <section class="card">
+    <h2>Change password</h2>
+    <form method="post" class="form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Current password<input type="password" name="current_password" required autocomplete="current-password"></label>
+      <label>New password<input type="password" name="new_password" required minlength="10" autocomplete="new-password"></label>
+      <button class="btn" type="submit">Update password</button>
+    </form>
+  </section>
+</div>
+<section class="card danger">
+  <h2>Delete my account and data</h2>
+  <p>Permanently deletes your account, students, predictions and batches. Audit entries are kept but detached from your identity. This cannot be undone.</p>
+  <form method="post" action="{{ url_for('auth.delete_account') }}" class="form inline-form" data-confirm="Delete your account and all of your data permanently?">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Confirm with your password<input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn btn-danger" type="submit">Delete account</button>
+  </form>
+</section>
+{% endblock %}

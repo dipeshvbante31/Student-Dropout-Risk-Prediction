@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge, stat, empty %}
+{% block title %}Batch {{ b.id }}{% endblock %}
+{% block content %}
+<div class="head-row"><h1>Batch {{ b.id }}: {{ b.filename }}</h1>
+  <div><a class="btn" href="{{ url_for('batch.download', batch_id=b.id) }}">Download results CSV</a>
+  <a class="btn btn-outline" href="{{ url_for('batch.history') }}">All batches</a></div></div>
+<p class="muted">Uploaded {{ b.created_at|dt }} by {{ b.user.name }} | model {{ b.model_version.version }} | status {{ b.status }}</p>
+{% if b.status == 'failed' %}<div class="flash flash-error">This job failed: {{ b.error_message }}</div>{% endif %}
+<section class="stats">
+  {{ stat('Rows in file', b.total_rows) }}
+  {{ stat('Predicted', b.valid_rows) }}
+  {{ stat('Rejected', b.rejected_rows) }}
+  {{ stat('High risk', counts.get('HIGH', 0)) }}
+  {{ stat('Medium risk', counts.get('MEDIUM', 0)) }}
+  {{ stat('Low risk', counts.get('LOW', 0)) }}
+  {{ stat('Average predicted risk', avg|pct if avg is not none else '-') }}
+</section>
+{% if b.rejected_detail %}
+<details class="card"><summary>{{ b.rejected_rows }} rejected rows (not predicted, not stored)</summary>
+  <div class="table-wrap"><table><thead><tr><th>Row</th><th>Student ID</th><th>Problems</th></tr></thead>
+  <tbody>{% for r in b.rejected_detail[:100] %}<tr><td>{{ r.row }}</td><td>{{ r.student_id or '-' }}</td><td>{{ r.errors|join('; ') }}</td></tr>{% endfor %}</tbody></table></div>
+  <p><a href="{{ url_for('batch.rejected', batch_id=b.id) }}">Download all rejected rows as CSV</a></p>
+</details>
+{% endif %}
+<form method="get" class="filters">
+  <label>Search ID<input type="search" name="q" value="{{ term }}" maxlength="64"></label>
+  <label>Risk<select name="risk"><option value="">All</option>{% for r in ('LOW','MEDIUM','HIGH') %}<option {{ 'selected' if risk==r }}>{{ r }}</option>{% endfor %}</select></label>
+  <label>Outcome<select name="outcome"><option value="">All</option><option value="dropout" {{ 'selected' if outcome=='dropout' }}>Predicted dropout</option><option value="not" {{ 'selected' if outcome=='not' }}>Not predicted dropout</option></select></label>
+  <label>Sort<select name="sort"><option value="prob_desc" {{ 'selected' if sort=='prob_desc' }}>Highest probability</option><option value="prob_asc" {{ 'selected' if sort=='prob_asc' }}>Lowest probability</option><option value="ref" {{ 'selected' if sort=='ref' }}>Student ID</option></select></label>
+  <button class="btn" type="submit">Apply</button>
+</form>
+{% if page.total == 0 %}{{ empty('No predictions match these filters.') }}{% else %}
+<div class="table-wrap"><table>
+  <thead><tr><th>Student ID</th><th>Course</th><th>Age</th><th>Tuition up to date</th><th>2nd sem approved</th><th>Predicted outcome</th><th>Probability</th><th>Risk %</th><th>Risk</th></tr></thead>
+  <tbody>{% for p, s in page.items %}<tr>
+    <td><a href="{{ url_for('students.detail', student_id=s.id) }}">{{ s.student_ref }}</a></td>
+    <td>{{ course_names.get(s.course_code, s.course_code) }}</td><td>{{ s.features.age_at_enrollment }}</td>
+    <td>{{ 'Yes' if s.features.tuition_fees_up_to_date else 'No' }}</td><td>{{ s.features.curricular_units_2nd_sem_approved }}</td>
+    <td>{{ 'Dropout risk' if p.predicted_dropout else 'Not at risk' }}</td><td>{{ p.probability|pct }}</td>
+    <td><progress max="100" value="{{ (p.probability*100)|round(1) }}"></progress></td><td>{{ badge(p.risk_level) }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% include "_pager.html" %}
+{% endif %}
+{% endblock %}

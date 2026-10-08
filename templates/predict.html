@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit student' if student else 'Predict' }}{% endblock %}
+{% block content %}
+<h1>{{ 'Edit student and re-predict' if student else 'Individual dropout-risk prediction' }}</h1>
+<p class="muted">All fields are required; nothing is guessed or filled in for you. Values are checked against the ranges and codes the model was trained on. Coded fields use the UCI data dictionary codes.</p>
+<form method="post" class="predict-form" data-loading="Running model..." novalidate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <fieldset class="card">
+    <legend>Student</legend>
+    <label>Student ID <small>(optional; generated if empty)</small>
+      <input name="student_id" maxlength="64" value="{{ student.student_ref if student else values.get('student_id','') }}" {{ 'readonly' if student }}>
+      {% if errors.get('student_id') %}<span class="err">{{ errors['student_id'] }}</span>{% endif %}
+    </label>
+  </fieldset>
+  {% for g in groups %}
+  <fieldset class="card">
+    <legend>{{ g.group }}</legend>
+    <div class="fields">
+    {% for f in g.fields %}
+      {% set v = values.get(f.name, '') %}
+      <label class="{{ 'has-err' if errors.get(f.name) }}">{{ f.label }}
+        {% if f.kind in ('categorical','binary') %}
+          <select name="{{ f.name }}" required>
+            <option value="">Select...</option>
+            {% for o in f.options %}<option value="{{ o.value }}" {{ 'selected' if v|string == o.value|string }}>{{ o.label }}</option>{% endfor %}
+          </select>
+        {% else %}
+          <input type="number" name="{{ f.name }}" required value="{{ v }}" step="{{ '1' if f.kind=='integer' else 'any' }}"
+                 {% if f.hard_min is defined %}min="{{ f.hard_min }}" max="{{ f.hard_max }}"{% endif %}>
+        {% endif %}
+        <small>{{ f.help }}</small>
+        {% if errors.get(f.name) %}<span class="err">{{ errors[f.name] }}</span>{% endif %}
+      </label>
+    {% endfor %}
+    </div>
+  </fieldset>
+  {% endfor %}
+  <p><button class="btn btn-lg" type="submit">Predict Dropout Risk</button></p>
+</form>
+{% endblock %}

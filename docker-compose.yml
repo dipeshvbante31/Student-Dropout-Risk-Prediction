@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dropout
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: dropout
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dropout"]
+      interval: 5s
+      retries: 10
+  web:
+    build: .
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      APP_ENV: production
+      SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in .env}
+      DATABASE_URL: postgresql://dropout:${POSTGRES_PASSWORD}@db:5432/dropout
+      SESSION_COOKIE_SECURE: "false"   # compose serves plain HTTP on localhost; keep true behind HTTPS
+      DEVELOPER_NAME: ${DEVELOPER_NAME:-Dipesh Bante}
+      DEVELOPER_EMAIL: ${DEVELOPER_EMAIL:-}
+      DEVELOPER_GITHUB: ${DEVELOPER_GITHUB:-}
+      DEVELOPER_INSTAGRAM: ${DEVELOPER_INSTAGRAM:-}
+    ports: ["8000:8000"]
+volumes:
+  pgdata:

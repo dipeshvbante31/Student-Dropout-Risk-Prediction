@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_macros.html" import stat, chart, badge, empty %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+{% if not status.ok %}<div class="flash flash-error" role="alert">Production model is currently unavailable. Predictions are disabled.</div>{% endif %}
+<p class="muted">{{ 'Showing data for all users (administrator view).' if current_user.is_admin else 'Showing your own students and predictions.' }} Risk counts use each student's latest prediction. Thresholds: low below {{ low_pct }}%, medium below {{ med_pct }}%, high otherwise.</p>
+{% if d.total_students == 0 %}
+  {{ empty('No student records available yet.', 'Predict a student', url_for('predict.new')) }}
+{% else %}
+<section class="stats">
+  {{ stat('Students', d.total_students) }}
+  {{ stat('Predictions', d.total_predictions) }}
+  {{ stat('High risk', d.high) }}
+  {{ stat('Medium risk', d.medium) }}
+  {{ stat('Low risk', d.low) }}
+  {{ stat('Average predicted risk', d.avg_probability|pct if d.avg_probability is not none else '-') }}
+  {{ stat('Predicted dropout', d.dropout_predicted, 'probability at or above 50%') }}
+  {{ stat('CSV batches', d.batches) }}
+</section>
+{% if d.has_data %}
+<section class="grid-2">
+  {{ chart('c-risk', 'donut', d.risk_distribution, '', 'Risk distribution (latest prediction per student)') }}
+  {{ chart('c-course', 'hbar', d.by_course, '%', 'Average predicted risk by course (top 10 by students)') }}
+</section>
+{% if d.trend|length > 1 %}
+  <section>{{ chart('c-trend', 'line', d.trend, '', 'Predictions per day') }}</section>
+{% endif %}
+<section class="card">
+  <h2>Recent predictions</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Student</th><th>Date</th><th>Probability</th><th>Risk</th><th></th></tr></thead>
+    <tbody>{% for p, s in d.recent %}
+      <tr><td>{{ s.student_ref }}</td><td>{{ p.created_at|dt }}</td><td>{{ p.probability|pct }}</td><td>{{ badge(p.risk_level) }}</td><td><a href="{{ url_for('predict.result', prediction_id=p.id) }}">View</a></td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+</section>
+{% else %}
+  {{ empty('No predictions have been generated yet.', 'Predict a student', url_for('predict.new')) }}
+{% endif %}
+{% endif %}
+{% endblock %}

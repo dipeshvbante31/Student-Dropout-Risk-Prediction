@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart, empty %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<h1>Analytics</h1>
+<p class="muted">Associations in data are not causes. Charts marked "your data" use stored predictions (latest per student); "training data" charts use the public dataset the model was trained on.</p>
+<h2>Your data{{ ' (all users)' if current_user.is_admin }}</h2>
+{% if a.n == 0 %}
+  {{ empty('Analytics will appear after prediction data is available.', 'Predict a student', url_for('predict.new')) }}
+{% else %}
+<div class="grid-2">
+  {{ chart('a-risk', 'donut', a.risk_distribution, '', 'Risk distribution') }}
+  {{ chart('a-hist', 'bar', a.histogram, '', 'Distribution of predicted probabilities (students)') }}
+  {{ chart('a-perf', 'bar', a.performance, '%', 'Average predicted risk by 2nd-semester approved units') }}
+  {{ chart('a-fin', 'hbar', a.financial, '%', 'Average predicted risk by financial indicator') }}
+  {{ chart('a-course', 'hbar', a.by_course, '%', 'Average predicted risk by course') }}
+  {% if a.trend|length > 1 %}{{ chart('a-trend', 'line', a.trend, '', 'Predictions per day') }}{% endif %}
+</div>
+{% if a.batches %}
+<section class="card"><h2>Recent batches</h2><div class="table-wrap"><table>
+  <thead><tr><th>#</th><th>File</th><th>Date</th><th>Predicted</th><th>Rejected</th><th>Status</th></tr></thead>
+  <tbody>{% for b in a.batches %}<tr><td>{{ b.id }}</td><td><a href="{{ url_for('batch.results', batch_id=b.id) }}">{{ b.filename }}</a></td><td>{{ b.created_at|dt }}</td><td>{{ b.valid_rows }}</td><td>{{ b.rejected_rows }}</td><td>{{ b.status }}</td></tr>{% endfor %}</tbody></table></div></section>
+{% endif %}
+{% endif %}
+{% if meta %}
+<h2>Training data: what the historical records show</h2>
+<section class="card"><ul>{% for s in meta.eda.insights %}<li>{{ s }}</li>{% endfor %}</ul></section>
+<div class="grid-2">
+  {{ chart('t-classes', 'bar', charts.classes, '', 'Outcome classes in the dataset (students)') }}
+  {{ chart('t-tuition', 'bar', charts.tuition, '%', 'Dropout rate by tuition status') }}
+  {{ chart('t-units', 'bar', charts.units, '%', 'Dropout rate by 2nd-semester approved units') }}
+  {{ chart('t-age', 'bar', charts.age, '%', 'Dropout rate by age at enrollment') }}
+  {{ chart('t-imp', 'hbar', charts.importance, '', 'Feature importance (permutation, drop in test ROC-AUC)') }}
+</div>
+{% endif %}
+{% endblock %}

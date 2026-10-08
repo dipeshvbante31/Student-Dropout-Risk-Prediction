@@ -1,0 +1,3200 @@
+{
+  "version": "gradient-boosting-20261007-fe58760a",
+  "model_type": "Gradient Boosting",
+  "trained_at": "2026-10-07T18:08:51.072782+00:00",
+  "sklearn_version": "1.8.0",
+  "dataset": {
+    "name": "Predict Students' Dropout and Academic Success",
+    "source": "UCI Machine Learning Repository, dataset id 697",
+    "url": "https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success",
+    "license": "CC BY 4.0",
+    "citation": "Realinho, V., Machado, J., Baptista, L., Martins, M.V. (2022). Predicting student dropout and academic success. Data, 7(11), 146.",
+    "rows": 4424,
+    "columns": 37,
+    "missing_values": 0,
+    "duplicate_rows": 0,
+    "sha256": "19737f02127e85ef29af536e46888a7721b6c530c3e1c6aedfbb09109c030a71",
+    "class_counts": {
+      "Graduate": 2209,
+      "Dropout": 1421,
+      "Enrolled": 794
+    },
+    "binary_target": "target = 1 if raw outcome is 'Dropout'; 0 if 'Graduate' or 'Enrolled'",
+    "mirror_note": "File obtained from a public GitHub mirror of the UCI file; verify sha256 against the UCI download."
+  },
+  "n_features": 36,
+  "n_train": 3539,
+  "n_test": 885,
+  "train_dropout_rate": 0.3212771969482905,
+  "config": {
+    "seed": 42,
+    "test_size": 0.2,
+    "cv_folds": 5,
+    "decision_threshold": 0.5,
+    "selection_rule": "highest mean 5-fold CV F1 (dropout class) on training split; ties by CV ROC-AUC",
+    "estimator_params": {
+      "categorical_features": "from_dtype",
+      "class_weight": "balanced",
+      "early_stopping": "auto",
+      "interaction_cst": "None",
+      "l2_regularization": "0.0",
+      "learning_rate": "0.05",
+      "loss": "log_loss",
+      "max_bins": "255",
+      "max_depth": "4",
+      "max_features": "1.0",
+      "max_iter": "250",
+      "max_leaf_nodes": "31",
+      "min_samples_leaf": "20",
+      "monotonic_cst": "None",
+      "n_iter_no_change": "10",
+      "random_state": "42",
+      "scoring": "loss",
+      "tol": "1e-07",
+      "validation_fraction": "0.1",
+      "verbose": "0",
+      "warm_start": "False"
+    }
+  },
+  "schema": [
+    {
+      "name": "marital_status",
+      "label": "Marital status",
+      "group": "Demographics",
+      "help": "Marital status at enrollment.",
+      "kind": "categorical",
+      "train_min": 1.0,
+      "train_max": 6.0,
+      "allowed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Single (1)"
+        },
+        {
+          "value": 2,
+          "label": "Married (2)"
+        },
+        {
+          "value": 3,
+          "label": "Widower (3)"
+        },
+        {
+          "value": 4,
+          "label": "Divorced (4)"
+        },
+        {
+          "value": 5,
+          "label": "Facto union (5)"
+        },
+        {
+          "value": 6,
+          "label": "Legally separated (6)"
+        }
+      ]
+    },
+    {
+      "name": "gender",
+      "label": "Gender",
+      "group": "Demographics",
+      "help": "Recorded gender (dataset coding: 1 = male, 0 = female).",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 0,
+      "options": [
+        {
+          "value": 1,
+          "label": "Male"
+        },
+        {
+          "value": 0,
+          "label": "Female"
+        }
+      ]
+    },
+    {
+      "name": "age_at_enrollment",
+      "label": "Age at enrollment",
+      "group": "Demographics",
+      "help": "Age in years at enrollment.",
+      "kind": "integer",
+      "train_min": 17.0,
+      "train_max": 62.0,
+      "hard_min": 14,
+      "hard_max": 100,
+      "baseline": 20.0,
+      "train_mean": 23.192992370726195
+    },
+    {
+      "name": "nationality",
+      "label": "Nationality (code)",
+      "group": "Demographics",
+      "help": "Nationality code from the UCI data dictionary.",
+      "kind": "categorical",
+      "train_min": 1.0,
+      "train_max": 109.0,
+      "allowed": [
+        1,
+        2,
+        6,
+        11,
+        13,
+        14,
+        17,
+        21,
+        22,
+        24,
+        25,
+        26,
+        41,
+        62,
+        100,
+        101,
+        103,
+        105,
+        109
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Code 1"
+        },
+        {
+          "value": 2,
+          "label": "Code 2"
+        },
+        {
+          "value": 6,
+          "label": "Code 6"
+        },
+        {
+          "value": 11,
+          "label": "Code 11"
+        },
+        {
+          "value": 13,
+          "label": "Code 13"
+        },
+        {
+          "value": 14,
+          "label": "Code 14"
+        },
+        {
+          "value": 17,
+          "label": "Code 17"
+        },
+        {
+          "value": 21,
+          "label": "Code 21"
+        },
+        {
+          "value": 22,
+          "label": "Code 22"
+        },
+        {
+          "value": 24,
+          "label": "Code 24"
+        },
+        {
+          "value": 25,
+          "label": "Code 25"
+        },
+        {
+          "value": 26,
+          "label": "Code 26"
+        },
+        {
+          "value": 41,
+          "label": "Code 41"
+        },
+        {
+          "value": 62,
+          "label": "Code 62"
+        },
+        {
+          "value": 100,
+          "label": "Code 100"
+        },
+        {
+          "value": 101,
+          "label": "Code 101"
+        },
+        {
+          "value": 103,
+          "label": "Code 103"
+        },
+        {
+          "value": 105,
+          "label": "Code 105"
+        },
+        {
+          "value": 109,
+          "label": "Code 109"
+        }
+      ]
+    },
+    {
+      "name": "international",
+      "label": "International student",
+      "group": "Demographics",
+      "help": "Whether the student is international.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 0,
+      "options": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 0,
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "name": "displaced",
+      "label": "Displaced from home",
+      "group": "Demographics",
+      "help": "Whether the student is displaced.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 0,
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "name": "educational_special_needs",
+      "label": "Educational special needs",
+      "group": "Demographics",
+      "help": "Whether the student has recorded special educational needs.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 0,
+      "options": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 0,
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "name": "application_mode",
+      "label": "Application mode",
+      "group": "Application and prior education",
+      "help": "Route through which the student applied.",
+      "kind": "categorical",
+      "train_min": 1.0,
+      "train_max": 57.0,
+      "allowed": [
+        1,
+        2,
+        5,
+        7,
+        10,
+        15,
+        16,
+        17,
+        18,
+        26,
+        27,
+        39,
+        42,
+        43,
+        44,
+        51,
+        53,
+        57
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "1st phase - general contingent (1)"
+        },
+        {
+          "value": 2,
+          "label": "Ordinance 612/93 (2)"
+        },
+        {
+          "value": 5,
+          "label": "1st phase - special contingent (Azores) (5)"
+        },
+        {
+          "value": 7,
+          "label": "Holders of other higher courses (7)"
+        },
+        {
+          "value": 10,
+          "label": "Ordinance 854-B/99 (10)"
+        },
+        {
+          "value": 15,
+          "label": "International student (bachelor) (15)"
+        },
+        {
+          "value": 16,
+          "label": "1st phase - special contingent (Madeira) (16)"
+        },
+        {
+          "value": 17,
+          "label": "2nd phase - general contingent (17)"
+        },
+        {
+          "value": 18,
+          "label": "3rd phase - general contingent (18)"
+        },
+        {
+          "value": 26,
+          "label": "Ordinance 533-A/99, item b2 (26)"
+        },
+        {
+          "value": 27,
+          "label": "Ordinance 533-A/99, item b3 (27)"
+        },
+        {
+          "value": 39,
+          "label": "Over 23 years old (39)"
+        },
+        {
+          "value": 42,
+          "label": "Transfer (42)"
+        },
+        {
+          "value": 43,
+          "label": "Change of course (43)"
+        },
+        {
+          "value": 44,
+          "label": "Technological specialization diploma holders (44)"
+        },
+        {
+          "value": 51,
+          "label": "Change of institution/course (51)"
+        },
+        {
+          "value": 53,
+          "label": "Short cycle diploma holders (53)"
+        },
+        {
+          "value": 57,
+          "label": "Change of institution/course (international) (57)"
+        }
+      ]
+    },
+    {
+      "name": "application_order",
+      "label": "Application order",
+      "group": "Application and prior education",
+      "help": "Choice order of the course (0 = first choice, 9 = last).",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 9.0,
+      "hard_min": 0,
+      "hard_max": 9,
+      "baseline": 1.0,
+      "train_mean": 1.7208250918338515
+    },
+    {
+      "name": "course",
+      "label": "Course",
+      "group": "Application and prior education",
+      "help": "Degree programme.",
+      "kind": "categorical",
+      "train_min": 33.0,
+      "train_max": 9991.0,
+      "allowed": [
+        33,
+        171,
+        8014,
+        9003,
+        9070,
+        9085,
+        9119,
+        9130,
+        9147,
+        9238,
+        9254,
+        9500,
+        9556,
+        9670,
+        9773,
+        9853,
+        9991
+      ],
+      "baseline": 9500,
+      "options": [
+        {
+          "value": 33,
+          "label": "Biofuel Production Technologies (33)"
+        },
+        {
+          "value": 171,
+          "label": "Animation and Multimedia Design (171)"
+        },
+        {
+          "value": 8014,
+          "label": "Social Service (evening) (8014)"
+        },
+        {
+          "value": 9003,
+          "label": "Agronomy (9003)"
+        },
+        {
+          "value": 9070,
+          "label": "Communication Design (9070)"
+        },
+        {
+          "value": 9085,
+          "label": "Veterinary Nursing (9085)"
+        },
+        {
+          "value": 9119,
+          "label": "Informatics Engineering (9119)"
+        },
+        {
+          "value": 9130,
+          "label": "Equinculture (9130)"
+        },
+        {
+          "value": 9147,
+          "label": "Management (9147)"
+        },
+        {
+          "value": 9238,
+          "label": "Social Service (9238)"
+        },
+        {
+          "value": 9254,
+          "label": "Tourism (9254)"
+        },
+        {
+          "value": 9500,
+          "label": "Nursing (9500)"
+        },
+        {
+          "value": 9556,
+          "label": "Oral Hygiene (9556)"
+        },
+        {
+          "value": 9670,
+          "label": "Advertising and Marketing Management (9670)"
+        },
+        {
+          "value": 9773,
+          "label": "Journalism and Communication (9773)"
+        },
+        {
+          "value": 9853,
+          "label": "Basic Education (9853)"
+        },
+        {
+          "value": 9991,
+          "label": "Management (evening) (9991)"
+        }
+      ]
+    },
+    {
+      "name": "daytime_evening_attendance",
+      "label": "Attendance regime",
+      "group": "Application and prior education",
+      "help": "Daytime or evening classes.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Daytime"
+        },
+        {
+          "value": 0,
+          "label": "Evening"
+        }
+      ]
+    },
+    {
+      "name": "previous_qualification",
+      "label": "Previous qualification (code)",
+      "group": "Application and prior education",
+      "help": "Qualification code from the UCI data dictionary.",
+      "kind": "categorical",
+      "train_min": 1.0,
+      "train_max": 43.0,
+      "allowed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        12,
+        15,
+        19,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Code 1"
+        },
+        {
+          "value": 2,
+          "label": "Code 2"
+        },
+        {
+          "value": 3,
+          "label": "Code 3"
+        },
+        {
+          "value": 4,
+          "label": "Code 4"
+        },
+        {
+          "value": 5,
+          "label": "Code 5"
+        },
+        {
+          "value": 6,
+          "label": "Code 6"
+        },
+        {
+          "value": 9,
+          "label": "Code 9"
+        },
+        {
+          "value": 10,
+          "label": "Code 10"
+        },
+        {
+          "value": 12,
+          "label": "Code 12"
+        },
+        {
+          "value": 15,
+          "label": "Code 15"
+        },
+        {
+          "value": 19,
+          "label": "Code 19"
+        },
+        {
+          "value": 38,
+          "label": "Code 38"
+        },
+        {
+          "value": 39,
+          "label": "Code 39"
+        },
+        {
+          "value": 40,
+          "label": "Code 40"
+        },
+        {
+          "value": 42,
+          "label": "Code 42"
+        },
+        {
+          "value": 43,
+          "label": "Code 43"
+        }
+      ]
+    },
+    {
+      "name": "previous_qualification_grade",
+      "label": "Previous qualification grade",
+      "group": "Application and prior education",
+      "help": "Grade of previous qualification (0-200).",
+      "kind": "float",
+      "train_min": 95.0,
+      "train_max": 190.0,
+      "hard_min": 0,
+      "hard_max": 200,
+      "baseline": 133.1,
+      "train_mean": 132.68411980785532
+    },
+    {
+      "name": "admission_grade",
+      "label": "Admission grade",
+      "group": "Application and prior education",
+      "help": "Admission grade (0-200).",
+      "kind": "float",
+      "train_min": 95.0,
+      "train_max": 190.0,
+      "hard_min": 0,
+      "hard_max": 200,
+      "baseline": 126.0,
+      "train_mean": 126.98621079400961
+    },
+    {
+      "name": "mothers_qualification",
+      "label": "Mother's qualification (code)",
+      "group": "Family background",
+      "help": "Qualification code from the UCI data dictionary.",
+      "kind": "categorical",
+      "train_min": 1.0,
+      "train_max": 44.0,
+      "allowed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11,
+        12,
+        14,
+        19,
+        22,
+        26,
+        29,
+        30,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Code 1"
+        },
+        {
+          "value": 2,
+          "label": "Code 2"
+        },
+        {
+          "value": 3,
+          "label": "Code 3"
+        },
+        {
+          "value": 4,
+          "label": "Code 4"
+        },
+        {
+          "value": 5,
+          "label": "Code 5"
+        },
+        {
+          "value": 6,
+          "label": "Code 6"
+        },
+        {
+          "value": 9,
+          "label": "Code 9"
+        },
+        {
+          "value": 10,
+          "label": "Code 10"
+        },
+        {
+          "value": 11,
+          "label": "Code 11"
+        },
+        {
+          "value": 12,
+          "label": "Code 12"
+        },
+        {
+          "value": 14,
+          "label": "Code 14"
+        },
+        {
+          "value": 19,
+          "label": "Code 19"
+        },
+        {
+          "value": 22,
+          "label": "Code 22"
+        },
+        {
+          "value": 26,
+          "label": "Code 26"
+        },
+        {
+          "value": 29,
+          "label": "Code 29"
+        },
+        {
+          "value": 30,
+          "label": "Code 30"
+        },
+        {
+          "value": 34,
+          "label": "Code 34"
+        },
+        {
+          "value": 35,
+          "label": "Code 35"
+        },
+        {
+          "value": 36,
+          "label": "Code 36"
+        },
+        {
+          "value": 37,
+          "label": "Code 37"
+        },
+        {
+          "value": 38,
+          "label": "Code 38"
+        },
+        {
+          "value": 39,
+          "label": "Code 39"
+        },
+        {
+          "value": 40,
+          "label": "Code 40"
+        },
+        {
+          "value": 41,
+          "label": "Code 41"
+        },
+        {
+          "value": 42,
+          "label": "Code 42"
+        },
+        {
+          "value": 43,
+          "label": "Code 43"
+        },
+        {
+          "value": 44,
+          "label": "Code 44"
+        }
+      ]
+    },
+    {
+      "name": "fathers_qualification",
+      "label": "Father's qualification (code)",
+      "group": "Family background",
+      "help": "Qualification code from the UCI data dictionary.",
+      "kind": "categorical",
+      "train_min": 1.0,
+      "train_max": 44.0,
+      "allowed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11,
+        12,
+        14,
+        19,
+        20,
+        22,
+        25,
+        26,
+        27,
+        29,
+        30,
+        31,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        43,
+        44
+      ],
+      "baseline": 37,
+      "options": [
+        {
+          "value": 1,
+          "label": "Code 1"
+        },
+        {
+          "value": 2,
+          "label": "Code 2"
+        },
+        {
+          "value": 3,
+          "label": "Code 3"
+        },
+        {
+          "value": 4,
+          "label": "Code 4"
+        },
+        {
+          "value": 5,
+          "label": "Code 5"
+        },
+        {
+          "value": 6,
+          "label": "Code 6"
+        },
+        {
+          "value": 9,
+          "label": "Code 9"
+        },
+        {
+          "value": 10,
+          "label": "Code 10"
+        },
+        {
+          "value": 11,
+          "label": "Code 11"
+        },
+        {
+          "value": 12,
+          "label": "Code 12"
+        },
+        {
+          "value": 14,
+          "label": "Code 14"
+        },
+        {
+          "value": 19,
+          "label": "Code 19"
+        },
+        {
+          "value": 20,
+          "label": "Code 20"
+        },
+        {
+          "value": 22,
+          "label": "Code 22"
+        },
+        {
+          "value": 25,
+          "label": "Code 25"
+        },
+        {
+          "value": 26,
+          "label": "Code 26"
+        },
+        {
+          "value": 27,
+          "label": "Code 27"
+        },
+        {
+          "value": 29,
+          "label": "Code 29"
+        },
+        {
+          "value": 30,
+          "label": "Code 30"
+        },
+        {
+          "value": 31,
+          "label": "Code 31"
+        },
+        {
+          "value": 33,
+          "label": "Code 33"
+        },
+        {
+          "value": 34,
+          "label": "Code 34"
+        },
+        {
+          "value": 35,
+          "label": "Code 35"
+        },
+        {
+          "value": 36,
+          "label": "Code 36"
+        },
+        {
+          "value": 37,
+          "label": "Code 37"
+        },
+        {
+          "value": 38,
+          "label": "Code 38"
+        },
+        {
+          "value": 39,
+          "label": "Code 39"
+        },
+        {
+          "value": 40,
+          "label": "Code 40"
+        },
+        {
+          "value": 41,
+          "label": "Code 41"
+        },
+        {
+          "value": 43,
+          "label": "Code 43"
+        },
+        {
+          "value": 44,
+          "label": "Code 44"
+        }
+      ]
+    },
+    {
+      "name": "mothers_occupation",
+      "label": "Mother's occupation (code)",
+      "group": "Family background",
+      "help": "Occupation code from the UCI data dictionary.",
+      "kind": "categorical",
+      "train_min": 0.0,
+      "train_max": 194.0,
+      "allowed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        90,
+        99,
+        122,
+        123,
+        125,
+        131,
+        132,
+        134,
+        141,
+        143,
+        144,
+        151,
+        152,
+        153,
+        171,
+        175,
+        191,
+        192,
+        193,
+        194
+      ],
+      "baseline": 9,
+      "options": [
+        {
+          "value": 0,
+          "label": "Code 0"
+        },
+        {
+          "value": 1,
+          "label": "Code 1"
+        },
+        {
+          "value": 2,
+          "label": "Code 2"
+        },
+        {
+          "value": 3,
+          "label": "Code 3"
+        },
+        {
+          "value": 4,
+          "label": "Code 4"
+        },
+        {
+          "value": 5,
+          "label": "Code 5"
+        },
+        {
+          "value": 6,
+          "label": "Code 6"
+        },
+        {
+          "value": 7,
+          "label": "Code 7"
+        },
+        {
+          "value": 8,
+          "label": "Code 8"
+        },
+        {
+          "value": 9,
+          "label": "Code 9"
+        },
+        {
+          "value": 10,
+          "label": "Code 10"
+        },
+        {
+          "value": 90,
+          "label": "Code 90"
+        },
+        {
+          "value": 99,
+          "label": "Code 99"
+        },
+        {
+          "value": 122,
+          "label": "Code 122"
+        },
+        {
+          "value": 123,
+          "label": "Code 123"
+        },
+        {
+          "value": 125,
+          "label": "Code 125"
+        },
+        {
+          "value": 131,
+          "label": "Code 131"
+        },
+        {
+          "value": 132,
+          "label": "Code 132"
+        },
+        {
+          "value": 134,
+          "label": "Code 134"
+        },
+        {
+          "value": 141,
+          "label": "Code 141"
+        },
+        {
+          "value": 143,
+          "label": "Code 143"
+        },
+        {
+          "value": 144,
+          "label": "Code 144"
+        },
+        {
+          "value": 151,
+          "label": "Code 151"
+        },
+        {
+          "value": 152,
+          "label": "Code 152"
+        },
+        {
+          "value": 153,
+          "label": "Code 153"
+        },
+        {
+          "value": 171,
+          "label": "Code 171"
+        },
+        {
+          "value": 175,
+          "label": "Code 175"
+        },
+        {
+          "value": 191,
+          "label": "Code 191"
+        },
+        {
+          "value": 192,
+          "label": "Code 192"
+        },
+        {
+          "value": 193,
+          "label": "Code 193"
+        },
+        {
+          "value": 194,
+          "label": "Code 194"
+        }
+      ]
+    },
+    {
+      "name": "fathers_occupation",
+      "label": "Father's occupation (code)",
+      "group": "Family background",
+      "help": "Occupation code from the UCI data dictionary.",
+      "kind": "categorical",
+      "train_min": 0.0,
+      "train_max": 195.0,
+      "allowed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        90,
+        99,
+        101,
+        102,
+        103,
+        112,
+        121,
+        122,
+        123,
+        124,
+        131,
+        132,
+        134,
+        135,
+        143,
+        144,
+        151,
+        152,
+        154,
+        161,
+        163,
+        171,
+        172,
+        174,
+        175,
+        181,
+        182,
+        183,
+        192,
+        193,
+        194,
+        195
+      ],
+      "baseline": 9,
+      "options": [
+        {
+          "value": 0,
+          "label": "Code 0"
+        },
+        {
+          "value": 1,
+          "label": "Code 1"
+        },
+        {
+          "value": 2,
+          "label": "Code 2"
+        },
+        {
+          "value": 3,
+          "label": "Code 3"
+        },
+        {
+          "value": 4,
+          "label": "Code 4"
+        },
+        {
+          "value": 5,
+          "label": "Code 5"
+        },
+        {
+          "value": 6,
+          "label": "Code 6"
+        },
+        {
+          "value": 7,
+          "label": "Code 7"
+        },
+        {
+          "value": 8,
+          "label": "Code 8"
+        },
+        {
+          "value": 9,
+          "label": "Code 9"
+        },
+        {
+          "value": 10,
+          "label": "Code 10"
+        },
+        {
+          "value": 90,
+          "label": "Code 90"
+        },
+        {
+          "value": 99,
+          "label": "Code 99"
+        },
+        {
+          "value": 101,
+          "label": "Code 101"
+        },
+        {
+          "value": 102,
+          "label": "Code 102"
+        },
+        {
+          "value": 103,
+          "label": "Code 103"
+        },
+        {
+          "value": 112,
+          "label": "Code 112"
+        },
+        {
+          "value": 121,
+          "label": "Code 121"
+        },
+        {
+          "value": 122,
+          "label": "Code 122"
+        },
+        {
+          "value": 123,
+          "label": "Code 123"
+        },
+        {
+          "value": 124,
+          "label": "Code 124"
+        },
+        {
+          "value": 131,
+          "label": "Code 131"
+        },
+        {
+          "value": 132,
+          "label": "Code 132"
+        },
+        {
+          "value": 134,
+          "label": "Code 134"
+        },
+        {
+          "value": 135,
+          "label": "Code 135"
+        },
+        {
+          "value": 143,
+          "label": "Code 143"
+        },
+        {
+          "value": 144,
+          "label": "Code 144"
+        },
+        {
+          "value": 151,
+          "label": "Code 151"
+        },
+        {
+          "value": 152,
+          "label": "Code 152"
+        },
+        {
+          "value": 154,
+          "label": "Code 154"
+        },
+        {
+          "value": 161,
+          "label": "Code 161"
+        },
+        {
+          "value": 163,
+          "label": "Code 163"
+        },
+        {
+          "value": 171,
+          "label": "Code 171"
+        },
+        {
+          "value": 172,
+          "label": "Code 172"
+        },
+        {
+          "value": 174,
+          "label": "Code 174"
+        },
+        {
+          "value": 175,
+          "label": "Code 175"
+        },
+        {
+          "value": 181,
+          "label": "Code 181"
+        },
+        {
+          "value": 182,
+          "label": "Code 182"
+        },
+        {
+          "value": 183,
+          "label": "Code 183"
+        },
+        {
+          "value": 192,
+          "label": "Code 192"
+        },
+        {
+          "value": 193,
+          "label": "Code 193"
+        },
+        {
+          "value": 194,
+          "label": "Code 194"
+        },
+        {
+          "value": 195,
+          "label": "Code 195"
+        }
+      ]
+    },
+    {
+      "name": "debtor",
+      "label": "Debtor",
+      "group": "Financial",
+      "help": "Whether the student is a debtor.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 0,
+      "options": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 0,
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "name": "tuition_fees_up_to_date",
+      "label": "Tuition fees up to date",
+      "group": "Financial",
+      "help": "Whether tuition fees are paid up to date.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 0,
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "name": "scholarship_holder",
+      "label": "Scholarship holder",
+      "group": "Financial",
+      "help": "Whether the student holds a scholarship.",
+      "kind": "binary",
+      "train_min": 0.0,
+      "train_max": 1.0,
+      "allowed": [
+        0,
+        1
+      ],
+      "baseline": 0,
+      "options": [
+        {
+          "value": 1,
+          "label": "Yes"
+        },
+        {
+          "value": 0,
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "name": "curricular_units_1st_sem_credited",
+      "label": "Units credited",
+      "group": "First semester",
+      "help": "Curricular units credited in 1st semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 20.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 0.0,
+      "train_mean": 0.688612602430065
+    },
+    {
+      "name": "curricular_units_1st_sem_enrolled",
+      "label": "Units enrolled",
+      "group": "First semester",
+      "help": "Curricular units enrolled in 1st semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 26.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 6.0,
+      "train_mean": 6.238202882170104
+    },
+    {
+      "name": "curricular_units_1st_sem_evaluations",
+      "label": "Evaluations taken",
+      "group": "First semester",
+      "help": "Number of evaluations in 1st semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 45.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 8.0,
+      "train_mean": 8.23848544786663
+    },
+    {
+      "name": "curricular_units_1st_sem_approved",
+      "label": "Units approved",
+      "group": "First semester",
+      "help": "Curricular units approved in 1st semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 26.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 5.0,
+      "train_mean": 4.677309974569087
+    },
+    {
+      "name": "curricular_units_1st_sem_grade",
+      "label": "Average grade",
+      "group": "First semester",
+      "help": "Average grade in 1st semester (0-20).",
+      "kind": "float",
+      "train_min": 0.0,
+      "train_max": 18.0,
+      "hard_min": 0,
+      "hard_max": 20,
+      "baseline": 12.333333333333334,
+      "train_mean": 10.616223044324949
+    },
+    {
+      "name": "curricular_units_1st_sem_without_evaluations",
+      "label": "Units without evaluations",
+      "group": "First semester",
+      "help": "Units without evaluation in 1st semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 12.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 0.0,
+      "train_mean": 0.13760949420740323
+    },
+    {
+      "name": "curricular_units_2nd_sem_credited",
+      "label": "Units credited",
+      "group": "Second semester",
+      "help": "Curricular units credited in 2nd semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 19.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 0.0,
+      "train_mean": 0.5261373269285109
+    },
+    {
+      "name": "curricular_units_2nd_sem_enrolled",
+      "label": "Units enrolled",
+      "group": "Second semester",
+      "help": "Curricular units enrolled in 2nd semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 23.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 6.0,
+      "train_mean": 6.2031647358010735
+    },
+    {
+      "name": "curricular_units_2nd_sem_evaluations",
+      "label": "Evaluations taken",
+      "group": "Second semester",
+      "help": "Number of evaluations in 2nd semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 33.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 8.0,
+      "train_mean": 8.033907883582932
+    },
+    {
+      "name": "curricular_units_2nd_sem_approved",
+      "label": "Units approved",
+      "group": "Second semester",
+      "help": "Curricular units approved in 2nd semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 20.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 5.0,
+      "train_mean": 4.413111048318734
+    },
+    {
+      "name": "curricular_units_2nd_sem_grade",
+      "label": "Average grade",
+      "group": "Second semester",
+      "help": "Average grade in 2nd semester (0-20).",
+      "kind": "float",
+      "train_min": 0.0,
+      "train_max": 18.571428571428573,
+      "hard_min": 0,
+      "hard_max": 20,
+      "baseline": 12.221428571428572,
+      "train_mean": 10.209791741595605
+    },
+    {
+      "name": "curricular_units_2nd_sem_without_evaluations",
+      "label": "Units without evaluations",
+      "group": "Second semester",
+      "help": "Units without evaluation in 2nd semester.",
+      "kind": "integer",
+      "train_min": 0.0,
+      "train_max": 12.0,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 0.0,
+      "train_mean": 0.14806442497880756
+    },
+    {
+      "name": "unemployment_rate",
+      "label": "Unemployment rate (%)",
+      "group": "Economic context",
+      "help": "National unemployment rate at enrollment.",
+      "kind": "float",
+      "train_min": 7.6,
+      "train_max": 16.2,
+      "hard_min": 0,
+      "hard_max": 100,
+      "baseline": 11.1,
+      "train_mean": 11.586154280870305
+    },
+    {
+      "name": "inflation_rate",
+      "label": "Inflation rate (%)",
+      "group": "Economic context",
+      "help": "National inflation rate at enrollment.",
+      "kind": "float",
+      "train_min": -0.8,
+      "train_max": 3.7,
+      "hard_min": -20,
+      "hard_max": 100,
+      "baseline": 1.4,
+      "train_mean": 1.2198926250353206
+    },
+    {
+      "name": "gdp",
+      "label": "GDP change (%)",
+      "group": "Economic context",
+      "help": "GDP change at enrollment.",
+      "kind": "float",
+      "train_min": -4.06,
+      "train_max": 3.51,
+      "hard_min": -30,
+      "hard_max": 30,
+      "baseline": 0.32,
+      "train_mean": 0.0113789205990393
+    }
+  ],
+  "comparison": [
+    {
+      "model": "Logistic Regression",
+      "cv_f1": 0.7858651671811532,
+      "cv_recall": 0.8091390370198625,
+      "cv_precision": 0.764629905943484,
+      "cv_roc_auc": 0.920465669073584,
+      "cv_accuracy": 0.8581557308273201,
+      "cv_f1_std": 0.018691618368001546,
+      "cv_roc_auc_std": 0.008219701616570844,
+      "test": {
+        "accuracy": 0.8779661016949153,
+        "precision": 0.7913907284768212,
+        "recall": 0.8415492957746479,
+        "f1": 0.8156996587030717,
+        "roc_auc": 0.9326005952520446,
+        "confusion_matrix": {
+          "tn": 538,
+          "fp": 63,
+          "fn": 45,
+          "tp": 239
+        },
+        "roc_curve": {
+          "fpr": [
+            0.0,
+            0.0,
+            0.0,
+            0.0017,
+            0.0033,
+            0.005,
+            0.005,
+            0.0083,
+            0.01,
+            0.0116,
+            0.0116,
+            0.0133,
+            0.0166,
+            0.0183,
+            0.0183,
+            0.0233,
+            0.025,
+            0.0266,
+            0.0266,
+            0.0283,
+            0.03,
+            0.0333,
+            0.0333,
+            0.0349,
+            0.0366,
+            0.0399,
+            0.0399,
+            0.0416,
+            0.0499,
+            0.0516,
+            0.0516,
+            0.0532,
+            0.0549,
+            0.0616,
+            0.0616,
+            0.0732,
+            0.0749,
+            0.0765,
+            0.0765,
+            0.0782,
+            0.0882,
+            0.0899,
+            0.0899,
+            0.0948,
+            0.0998,
+            0.1082,
+            0.1082,
+            0.1181,
+            0.1198,
+            0.1215,
+            0.1215,
+            0.1231,
+            0.1314,
+            0.1314,
+            0.1431,
+            0.1448,
+            0.1464,
+            0.1464,
+            0.1514,
+            0.1564,
+            0.1847,
+            0.1847,
+            0.1913,
+            0.2047,
+            0.2113,
+            0.2113,
+            0.2313,
+            0.2396,
+            0.2479,
+            0.2479,
+            0.2729,
+            0.2745,
+            0.2812,
+            0.2812,
+            0.3095,
+            0.3361,
+            0.3378,
+            0.3378,
+            0.3494,
+            0.3727,
+            0.3744,
+            0.3744,
+            0.3993,
+            0.401,
+            0.4027,
+            0.4027,
+            0.5008,
+            0.5341,
+            0.609,
+            0.609,
+            0.624,
+            0.629,
+            0.6722,
+            0.6722,
+            0.7787,
+            0.7953,
+            0.8386,
+            0.8386,
+            0.8586,
+            0.9884,
+            1.0
+          ],
+          "tpr": [
+            0.0,
+            0.0035,
+            0.1549,
+            0.4965,
+            0.4965,
+            0.5211,
+            0.5317,
+            0.5387,
+            0.5387,
+            0.5634,
+            0.5669,
+            0.5951,
+            0.5951,
+            0.6092,
+            0.6408,
+            0.6549,
+            0.6549,
+            0.669,
+            0.6796,
+            0.6866,
+            0.6866,
+            0.6901,
+            0.6972,
+            0.7254,
+            0.7254,
+            0.7289,
+            0.7535,
+            0.7606,
+            0.7606,
+            0.7641,
+            0.7782,
+            0.7852,
+            0.7852,
+            0.7923,
+            0.7958,
+            0.7993,
+            0.7993,
+            0.8063,
+            0.8099,
+            0.8239,
+            0.8239,
+            0.831,
+            0.8345,
+            0.838,
+            0.838,
+            0.8415,
+            0.8486,
+            0.8521,
+            0.8521,
+            0.8556,
+            0.8592,
+            0.8592,
+            0.8662,
+            0.8697,
+            0.8732,
+            0.8732,
+            0.8768,
+            0.8803,
+            0.8838,
+            0.8838,
+            0.8873,
+            0.8908,
+            0.8944,
+            0.8944,
+            0.8979,
+            0.9014,
+            0.9049,
+            0.9049,
+            0.9085,
+            0.912,
+            0.9155,
+            0.9155,
+            0.919,
+            0.9225,
+            0.9296,
+            0.9296,
+            0.9331,
+            0.9401,
+            0.9437,
+            0.9437,
+            0.9472,
+            0.9507,
+            0.9542,
+            0.9542,
+            0.9577,
+            0.9613,
+            0.9648,
+            0.9648,
+            0.9683,
+            0.9718,
+            0.9754,
+            0.9754,
+            0.9789,
+            0.9824,
+            0.9859,
+            0.9859,
+            0.9894,
+            0.993,
+            0.9965,
+            0.9965,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "Decision Tree",
+      "cv_f1": 0.7607001325479551,
+      "cv_recall": 0.7889674627096375,
+      "cv_precision": 0.7356334773776296,
+      "cv_roc_auc": 0.8924925336158092,
+      "cv_accuracy": 0.8406340149753474,
+      "cv_f1_std": 0.012461523265745449,
+      "cv_roc_auc_std": 0.010789438789470612,
+      "test": {
+        "accuracy": 0.8621468926553673,
+        "precision": 0.7484662576687117,
+        "recall": 0.8591549295774648,
+        "f1": 0.8,
+        "roc_auc": 0.920171193550655,
+        "confusion_matrix": {
+          "tn": 519,
+          "fp": 82,
+          "fn": 40,
+          "tp": 244
+        },
+        "roc_curve": {
+          "fpr": [
+            0.0,
+            0.0033,
+            0.0067,
+            0.0116,
+            0.0116,
+            0.0116,
+            0.0116,
+            0.015,
+            0.03,
+            0.03,
+            0.03,
+            0.03,
+            0.03,
+            0.0399,
+            0.0532,
+            0.0599,
+            0.1048,
+            0.1048,
+            0.1098,
+            0.1115,
+            0.1364,
+            0.1398,
+            0.1431,
+            0.1531,
+            0.1581,
+            0.178,
+            0.1897,
+            0.198,
+            0.2679,
+            0.2862,
+            0.4243,
+            0.4293,
+            0.5241,
+            1.0
+          ],
+          "tpr": [
+            0.0,
+            0.2007,
+            0.2923,
+            0.4965,
+            0.5,
+            0.5141,
+            0.5634,
+            0.5634,
+            0.6373,
+            0.6479,
+            0.6549,
+            0.6655,
+            0.6796,
+            0.6796,
+            0.7077,
+            0.7254,
+            0.8239,
+            0.8345,
+            0.8345,
+            0.8415,
+            0.8592,
+            0.8592,
+            0.8627,
+            0.8662,
+            0.8662,
+            0.8908,
+            0.8908,
+            0.8908,
+            0.8979,
+            0.9085,
+            0.9437,
+            0.9472,
+            0.9648,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "Random Forest",
+      "cv_f1": 0.7730050160118371,
+      "cv_recall": 0.7572803153257592,
+      "cv_precision": 0.7901687785737274,
+      "cv_roc_auc": 0.9151322140406739,
+      "cv_accuracy": 0.8570289837700477,
+      "cv_f1_std": 0.02659832667684372,
+      "cv_roc_auc_std": 0.012377386434732279,
+      "test": {
+        "accuracy": 0.8813559322033898,
+        "precision": 0.8231046931407943,
+        "recall": 0.8028169014084507,
+        "f1": 0.8128342245989305,
+        "roc_auc": 0.9308956902814558,
+        "confusion_matrix": {
+          "tn": 552,
+          "fp": 49,
+          "fn": 56,
+          "tp": 228
+        },
+        "roc_curve": {
+          "fpr": [
+            0.0,
+            0.0,
+            0.0033,
+            0.0033,
+            0.005,
+            0.0067,
+            0.0083,
+            0.0083,
+            0.01,
+            0.0133,
+            0.0166,
+            0.0183,
+            0.0183,
+            0.0216,
+            0.0233,
+            0.0266,
+            0.0266,
+            0.03,
+            0.0316,
+            0.0333,
+            0.0366,
+            0.0366,
+            0.0399,
+            0.0433,
+            0.0449,
+            0.0449,
+            0.0466,
+            0.0483,
+            0.0499,
+            0.0499,
+            0.0516,
+            0.0549,
+            0.0599,
+            0.0616,
+            0.0616,
+            0.0632,
+            0.0666,
+            0.0682,
+            0.0682,
+            0.0699,
+            0.0715,
+            0.0749,
+            0.0782,
+            0.0782,
+            0.0815,
+            0.0899,
+            0.0998,
+            0.0998,
+            0.1048,
+            0.1098,
+            0.1198,
+            0.1215,
+            0.1215,
+            0.1231,
+            0.1248,
+            0.1281,
+            0.1281,
+            0.1298,
+            0.1348,
+            0.1381,
+            0.1431,
+            0.1431,
+            0.1448,
+            0.1481,
+            0.178,
+            0.178,
+            0.1864,
+            0.198,
+            0.208,
+            0.208,
+            0.2146,
+            0.2546,
+            0.2646,
+            0.2962,
+            0.2962,
+            0.2995,
+            0.3045,
+            0.3078,
+            0.3078,
+            0.3827,
+            0.386,
+            0.4176,
+            0.4293,
+            0.4293,
+            0.4309,
+            0.4592,
+            0.5474,
+            0.5474,
+            0.574,
+            0.5907,
+            0.6123,
+            0.6423,
+            0.6423,
+            0.7022,
+            0.7438,
+            0.7654,
+            0.7654,
+            0.7754,
+            0.8752,
+            0.9567,
+            1.0
+          ],
+          "tpr": [
+            0.0,
+            0.0035,
+            0.4331,
+            0.4366,
+            0.4965,
+            0.4965,
+            0.5141,
+            0.5246,
+            0.5317,
+            0.5317,
+            0.5493,
+            0.5704,
+            0.581,
+            0.588,
+            0.588,
+            0.6197,
+            0.6479,
+            0.662,
+            0.662,
+            0.6655,
+            0.669,
+            0.6901,
+            0.6937,
+            0.6937,
+            0.6972,
+            0.7007,
+            0.7042,
+            0.7042,
+            0.7077,
+            0.7183,
+            0.7254,
+            0.7394,
+            0.7394,
+            0.75,
+            0.7535,
+            0.7606,
+            0.7606,
+            0.7676,
+            0.7746,
+            0.7782,
+            0.7817,
+            0.7817,
+            0.7852,
+            0.7923,
+            0.8169,
+            0.8169,
+            0.831,
+            0.8345,
+            0.838,
+            0.838,
+            0.8415,
+            0.8451,
+            0.8486,
+            0.8521,
+            0.8521,
+            0.8592,
+            0.8662,
+            0.8732,
+            0.8732,
+            0.8803,
+            0.8838,
+            0.8873,
+            0.8944,
+            0.8944,
+            0.8979,
+            0.9014,
+            0.9049,
+            0.9049,
+            0.9085,
+            0.912,
+            0.9155,
+            0.919,
+            0.919,
+            0.9225,
+            0.9296,
+            0.9331,
+            0.9331,
+            0.9366,
+            0.9401,
+            0.9437,
+            0.9472,
+            0.9472,
+            0.9507,
+            0.9542,
+            0.9577,
+            0.9577,
+            0.9613,
+            0.9648,
+            0.9683,
+            0.9683,
+            0.9718,
+            0.9754,
+            0.9789,
+            0.9824,
+            0.9824,
+            0.9859,
+            0.9894,
+            0.993,
+            0.993,
+            0.9965,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "Gradient Boosting",
+      "cv_f1": 0.7916810933810067,
+      "cv_recall": 0.8021060360151481,
+      "cv_precision": 0.7818992621923208,
+      "cv_roc_auc": 0.9181338387179739,
+      "cv_accuracy": 0.8643728174270212,
+      "cv_f1_std": 0.014046005230052954,
+      "cv_roc_auc_std": 0.01035202791522643,
+      "test": {
+        "accuracy": 0.8870056497175142,
+        "precision": 0.8129251700680272,
+        "recall": 0.8415492957746479,
+        "f1": 0.8269896193771626,
+        "roc_auc": 0.938101989641677,
+        "confusion_matrix": {
+          "tn": 546,
+          "fp": 55,
+          "fn": 45,
+          "tp": 239
+        },
+        "roc_curve": {
+          "fpr": [
+            0.0,
+            0.0,
+            0.0,
+            0.0017,
+            0.0033,
+            0.005,
+            0.005,
+            0.0083,
+            0.0116,
+            0.0116,
+            0.0133,
+            0.015,
+            0.0216,
+            0.0216,
+            0.0283,
+            0.03,
+            0.03,
+            0.0333,
+            0.0416,
+            0.0433,
+            0.0433,
+            0.0449,
+            0.0466,
+            0.0466,
+            0.0483,
+            0.0499,
+            0.0516,
+            0.0516,
+            0.0549,
+            0.0566,
+            0.0566,
+            0.0582,
+            0.0632,
+            0.0649,
+            0.0649,
+            0.0666,
+            0.0682,
+            0.0682,
+            0.0765,
+            0.0782,
+            0.0799,
+            0.0799,
+            0.0865,
+            0.0899,
+            0.0899,
+            0.0915,
+            0.0948,
+            0.1082,
+            0.1082,
+            0.1115,
+            0.1131,
+            0.1131,
+            0.1181,
+            0.1231,
+            0.1265,
+            0.1265,
+            0.1381,
+            0.1564,
+            0.1564,
+            0.183,
+            0.1897,
+            0.1947,
+            0.1947,
+            0.198,
+            0.2113,
+            0.2113,
+            0.2263,
+            0.2379,
+            0.2396,
+            0.2396,
+            0.2479,
+            0.2546,
+            0.2546,
+            0.2895,
+            0.3145,
+            0.3161,
+            0.3161,
+            0.3195,
+            0.3527,
+            0.3527,
+            0.3594,
+            0.3611,
+            0.4609,
+            0.4609,
+            0.4725,
+            0.5025,
+            0.5025,
+            0.5225,
+            0.5258,
+            0.5507,
+            0.5507,
+            0.5624,
+            0.6057,
+            0.6057,
+            0.6606,
+            0.7005,
+            0.7903,
+            0.7903,
+            0.8702,
+            0.8735,
+            1.0
+          ],
+          "tpr": [
+            0.0,
+            0.0035,
+            0.4401,
+            0.5035,
+            0.5035,
+            0.5106,
+            0.5458,
+            0.5599,
+            0.5599,
+            0.5669,
+            0.6479,
+            0.6479,
+            0.6901,
+            0.7042,
+            0.7113,
+            0.7113,
+            0.7148,
+            0.7183,
+            0.7183,
+            0.7254,
+            0.743,
+            0.7465,
+            0.7465,
+            0.75,
+            0.7535,
+            0.7535,
+            0.757,
+            0.7606,
+            0.7676,
+            0.7676,
+            0.7711,
+            0.7782,
+            0.7782,
+            0.7817,
+            0.7852,
+            0.7887,
+            0.7887,
+            0.7958,
+            0.8099,
+            0.8099,
+            0.8134,
+            0.8204,
+            0.8239,
+            0.8239,
+            0.8345,
+            0.8451,
+            0.8451,
+            0.8556,
+            0.8592,
+            0.8627,
+            0.8627,
+            0.8662,
+            0.8697,
+            0.8697,
+            0.8732,
+            0.8768,
+            0.8803,
+            0.8803,
+            0.8873,
+            0.8908,
+            0.8908,
+            0.8979,
+            0.9049,
+            0.9085,
+            0.9085,
+            0.912,
+            0.9155,
+            0.9155,
+            0.919,
+            0.9225,
+            0.9261,
+            0.9261,
+            0.9296,
+            0.9331,
+            0.9331,
+            0.9366,
+            0.9401,
+            0.9437,
+            0.9437,
+            0.9472,
+            0.9507,
+            0.9507,
+            0.9542,
+            0.9577,
+            0.9613,
+            0.9613,
+            0.9648,
+            0.9683,
+            0.9683,
+            0.9718,
+            0.9754,
+            0.9789,
+            0.9789,
+            0.9824,
+            0.9859,
+            0.9859,
+            0.9894,
+            0.993,
+            0.9965,
+            0.9965,
+            1.0
+          ]
+        }
+      }
+    }
+  ],
+  "metrics": {
+    "accuracy": 0.8870056497175142,
+    "precision": 0.8129251700680272,
+    "recall": 0.8415492957746479,
+    "f1": 0.8269896193771626,
+    "roc_auc": 0.938101989641677,
+    "confusion_matrix": {
+      "tn": 546,
+      "fp": 55,
+      "fn": 45,
+      "tp": 239
+    },
+    "roc_curve": {
+      "fpr": [
+        0.0,
+        0.0,
+        0.0,
+        0.0017,
+        0.0033,
+        0.005,
+        0.005,
+        0.0083,
+        0.0116,
+        0.0116,
+        0.0133,
+        0.015,
+        0.0216,
+        0.0216,
+        0.0283,
+        0.03,
+        0.03,
+        0.0333,
+        0.0416,
+        0.0433,
+        0.0433,
+        0.0449,
+        0.0466,
+        0.0466,
+        0.0483,
+        0.0499,
+        0.0516,
+        0.0516,
+        0.0549,
+        0.0566,
+        0.0566,
+        0.0582,
+        0.0632,
+        0.0649,
+        0.0649,
+        0.0666,
+        0.0682,
+        0.0682,
+        0.0765,
+        0.0782,
+        0.0799,
+        0.0799,
+        0.0865,
+        0.0899,
+        0.0899,
+        0.0915,
+        0.0948,
+        0.1082,
+        0.1082,
+        0.1115,
+        0.1131,
+        0.1131,
+        0.1181,
+        0.1231,
+        0.1265,
+        0.1265,
+        0.1381,
+        0.1564,
+        0.1564,
+        0.183,
+        0.1897,
+        0.1947,
+        0.1947,
+        0.198,
+        0.2113,
+        0.2113,
+        0.2263,
+        0.2379,
+        0.2396,
+        0.2396,
+        0.2479,
+        0.2546,
+        0.2546,
+        0.2895,
+        0.3145,
+        0.3161,
+        0.3161,
+        0.3195,
+        0.3527,
+        0.3527,
+        0.3594,
+        0.3611,
+        0.4609,
+        0.4609,
+        0.4725,
+        0.5025,
+        0.5025,
+        0.5225,
+        0.5258,
+        0.5507,
+        0.5507,
+        0.5624,
+        0.6057,
+        0.6057,
+        0.6606,
+        0.7005,
+        0.7903,
+        0.7903,
+        0.8702,
+        0.8735,
+        1.0
+      ],
+      "tpr": [
+        0.0,
+        0.0035,
+        0.4401,
+        0.5035,
+        0.5035,
+        0.5106,
+        0.5458,
+        0.5599,
+        0.5599,
+        0.5669,
+        0.6479,
+        0.6479,
+        0.6901,
+        0.7042,
+        0.7113,
+        0.7113,
+        0.7148,
+        0.7183,
+        0.7183,
+        0.7254,
+        0.743,
+        0.7465,
+        0.7465,
+        0.75,
+        0.7535,
+        0.7535,
+        0.757,
+        0.7606,
+        0.7676,
+        0.7676,
+        0.7711,
+        0.7782,
+        0.7782,
+        0.7817,
+        0.7852,
+        0.7887,
+        0.7887,
+        0.7958,
+        0.8099,
+        0.8099,
+        0.8134,
+        0.8204,
+        0.8239,
+        0.8239,
+        0.8345,
+        0.8451,
+        0.8451,
+        0.8556,
+        0.8592,
+        0.8627,
+        0.8627,
+        0.8662,
+        0.8697,
+        0.8697,
+        0.8732,
+        0.8768,
+        0.8803,
+        0.8803,
+        0.8873,
+        0.8908,
+        0.8908,
+        0.8979,
+        0.9049,
+        0.9085,
+        0.9085,
+        0.912,
+        0.9155,
+        0.9155,
+        0.919,
+        0.9225,
+        0.9261,
+        0.9261,
+        0.9296,
+        0.9331,
+        0.9331,
+        0.9366,
+        0.9401,
+        0.9437,
+        0.9437,
+        0.9472,
+        0.9507,
+        0.9507,
+        0.9542,
+        0.9577,
+        0.9613,
+        0.9613,
+        0.9648,
+        0.9683,
+        0.9683,
+        0.9718,
+        0.9754,
+        0.9789,
+        0.9789,
+        0.9824,
+        0.9859,
+        0.9859,
+        0.9894,
+        0.993,
+        0.9965,
+        0.9965,
+        1.0
+      ]
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "curricular_units_2nd_sem_approved",
+      "label": "Units approved (second semester)",
+      "importance": 0.16741463757587113,
+      "std": 0.012824491694558378
+    },
+    {
+      "feature": "tuition_fees_up_to_date",
+      "label": "Tuition fees up to date",
+      "importance": 0.030608610063040477,
+      "std": 0.004155971894509863
+    },
+    {
+      "feature": "curricular_units_1st_sem_approved",
+      "label": "Units approved (first semester)",
+      "importance": 0.030228961121136155,
+      "std": 0.0042139978596402025
+    },
+    {
+      "feature": "curricular_units_2nd_sem_enrolled",
+      "label": "Units enrolled (second semester)",
+      "importance": 0.01727285510065386,
+      "std": 0.003608493687697237
+    },
+    {
+      "feature": "curricular_units_1st_sem_enrolled",
+      "label": "Units enrolled (first semester)",
+      "importance": 0.011200815542171495,
+      "std": 0.0026979828697270077
+    },
+    {
+      "feature": "course",
+      "label": "Course",
+      "importance": 0.007925757540249777,
+      "std": 0.001854821266863994
+    },
+    {
+      "feature": "age_at_enrollment",
+      "label": "Age at enrollment",
+      "importance": 0.005470928733800484,
+      "std": 0.0012541095893881817
+    },
+    {
+      "feature": "unemployment_rate",
+      "label": "Unemployment rate (%)",
+      "importance": 0.004805371329474384,
+      "std": 0.001075346465026683
+    },
+    {
+      "feature": "mothers_occupation",
+      "label": "Mother's occupation (code)",
+      "importance": 0.0029704014436033434,
+      "std": 0.0024588539420621917
+    },
+    {
+      "feature": "gdp",
+      "label": "GDP change (%)",
+      "importance": 0.0025345082140094677,
+      "std": 0.0013271325142794415
+    },
+    {
+      "feature": "gender",
+      "label": "Gender",
+      "importance": 0.0023575730589862065,
+      "std": 0.0008790716198978976
+    },
+    {
+      "feature": "curricular_units_2nd_sem_grade",
+      "label": "Average grade (second semester)",
+      "importance": 0.0019333973893275846,
+      "std": 0.0011847780083206654
+    },
+    {
+      "feature": "scholarship_holder",
+      "label": "Scholarship holder",
+      "importance": 0.0018912141735604627,
+      "std": 0.0008144538672312337
+    },
+    {
+      "feature": "fathers_occupation",
+      "label": "Father's occupation (code)",
+      "importance": 0.0018150500339809473,
+      "std": 0.0007375494283549277
+    },
+    {
+      "feature": "application_order",
+      "label": "Application order",
+      "importance": 0.0015959316631904085,
+      "std": 0.0002092691907778799
+    },
+    {
+      "feature": "previous_qualification_grade",
+      "label": "Previous qualification grade",
+      "importance": 0.0015889011272292475,
+      "std": 0.0003528989802738574
+    },
+    {
+      "feature": "curricular_units_2nd_sem_credited",
+      "label": "Units credited (second semester)",
+      "importance": 0.0010194277143727782,
+      "std": 0.00047452501069379584
+    },
+    {
+      "feature": "admission_grade",
+      "label": "Admission grade",
+      "importance": 0.0006632138923390096,
+      "std": 0.0009615427112655476
+    },
+    {
+      "feature": "curricular_units_1st_sem_credited",
+      "label": "Units credited (first semester)",
+      "importance": 0.0006421222844554597,
+      "std": 0.000391138399020244
+    },
+    {
+      "feature": "curricular_units_1st_sem_grade",
+      "label": "Average grade (first semester)",
+      "importance": 0.0006011108246818609,
+      "std": 0.0007554110142403652
+    },
+    {
+      "feature": "curricular_units_2nd_sem_evaluations",
+      "label": "Evaluations taken (second semester)",
+      "importance": 0.0005214314171216649,
+      "std": 0.0006661306577433738
+    },
+    {
+      "feature": "fathers_qualification",
+      "label": "Father's qualification (code)",
+      "importance": 0.0004815917133415892,
+      "std": 0.0006812871900202138
+    },
+    {
+      "feature": "displaced",
+      "label": "Displaced from home",
+      "importance": 0.00047807644536095316,
+      "std": 0.0004603316160754968
+    },
+    {
+      "feature": "marital_status",
+      "label": "Marital status",
+      "importance": 0.0003152023622600364,
+      "std": 0.00020662148605097682
+    },
+    {
+      "feature": "previous_qualification",
+      "label": "Previous qualification (code)",
+      "importance": 0.00020271378688105913,
+      "std": 0.00013093291864621227
+    },
+    {
+      "feature": "curricular_units_2nd_sem_without_evaluations",
+      "label": "Units without evaluations (second semester)",
+      "importance": 7.733589557303854e-05,
+      "std": 6.926257507972519e-05
+    },
+    {
+      "feature": "daytime_evening_attendance",
+      "label": "Attendance regime",
+      "importance": 7.499238358612547e-05,
+      "std": 5.0724990794530544e-05
+    },
+    {
+      "feature": "debtor",
+      "label": "Debtor",
+      "importance": 4.218321576712203e-05,
+      "std": 0.0013634749307531184
+    },
+    {
+      "feature": "international",
+      "label": "International student",
+      "importance": 3.0465655831846127e-05,
+      "std": 0.00010931924529248773
+    },
+    {
+      "feature": "educational_special_needs",
+      "label": "Educational special needs",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "curricular_units_1st_sem_without_evaluations",
+      "label": "Units without evaluations (first semester)",
+      "importance": -1.4061071922388812e-05,
+      "std": 0.00026273476504038156
+    },
+    {
+      "feature": "application_mode",
+      "label": "Application mode",
+      "importance": -4.921375172832754e-05,
+      "std": 0.0011167984183379637
+    },
+    {
+      "feature": "nationality",
+      "label": "Nationality (code)",
+      "importance": -0.000239038222680521,
+      "std": 0.00013284840097303003
+    },
+    {
+      "feature": "inflation_rate",
+      "label": "Inflation rate (%)",
+      "importance": -0.0004300344496262154,
+      "std": 0.00027611206118135004
+    },
+    {
+      "feature": "curricular_units_1st_sem_evaluations",
+      "label": "Evaluations taken (first semester)",
+      "importance": -0.0008049963675564431,
+      "std": 0.00047750458509828207
+    },
+    {
+      "feature": "mothers_qualification",
+      "label": "Mother's qualification (code)",
+      "importance": -0.0008987368470390056,
+      "std": 0.00100776192837221
+    }
+  ],
+  "fairness_by_gender": {
+    "Female": {
+      "n": 564,
+      "actual_dropout_rate": 0.24468085106382978,
+      "predicted_dropout_rate": 0.25177304964539005,
+      "recall": 0.8188405797101449,
+      "precision": 0.795774647887324
+    },
+    "Male": {
+      "n": 321,
+      "actual_dropout_rate": 0.45482866043613707,
+      "predicted_dropout_rate": 0.4735202492211838,
+      "recall": 0.863013698630137,
+      "precision": 0.8289473684210527
+    }
+  },
+  "baseline_mean_probability": 0.3813431794325404,
+  "eda": {
+    "class_distribution": {
+      "Graduate": 2209,
+      "Dropout": 1421,
+      "Enrolled": 794
+    },
+    "binary_dropout_rate": 0.3212025316455696,
+    "dropout_rate_by": {
+      "tuition_up_to_date": [
+        {
+          "group": "No",
+          "dropout_rate": 0.865530303030303,
+          "n": 528
+        },
+        {
+          "group": "Yes",
+          "dropout_rate": 0.24743326488706366,
+          "n": 3896
+        }
+      ],
+      "debtor": [
+        {
+          "group": "No",
+          "dropout_rate": 0.28283601122162716,
+          "n": 3921
+        },
+        {
+          "group": "Yes",
+          "dropout_rate": 0.6202783300198808,
+          "n": 503
+        }
+      ],
+      "scholarship_holder": [
+        {
+          "group": "No",
+          "dropout_rate": 0.38706766917293234,
+          "n": 3325
+        },
+        {
+          "group": "Yes",
+          "dropout_rate": 0.12192902638762511,
+          "n": 1099
+        }
+      ],
+      "gender": [
+        {
+          "group": "Female",
+          "dropout_rate": 0.2510460251046025,
+          "n": 2868
+        },
+        {
+          "group": "Male",
+          "dropout_rate": 0.4505141388174807,
+          "n": 1556
+        }
+      ],
+      "attendance": [
+        {
+          "group": "Evening",
+          "dropout_rate": 0.42857142857142855,
+          "n": 483
+        },
+        {
+          "group": "Daytime",
+          "dropout_rate": 0.30804364374524235,
+          "n": 3941
+        }
+      ],
+      "age_group": [
+        {
+          "group": "<=19",
+          "dropout_rate": 0.20952868852459017,
+          "n": 1952
+        },
+        {
+          "group": "20-24",
+          "dropout_rate": 0.2856071964017991,
+          "n": 1334
+        },
+        {
+          "group": "25-29",
+          "dropout_rate": 0.5761124121779859,
+          "n": 427
+        },
+        {
+          "group": "30+",
+          "dropout_rate": 0.5414908579465542,
+          "n": 711
+        }
+      ],
+      "second_sem_units_approved": [
+        {
+          "group": "0",
+          "dropout_rate": 0.835632183908046,
+          "n": 870
+        },
+        {
+          "group": "1-2",
+          "dropout_rate": 0.6474358974358975,
+          "n": 312
+        },
+        {
+          "group": "3-4",
+          "dropout_rate": 0.3419170243204578,
+          "n": 699
+        },
+        {
+          "group": "5-6",
+          "dropout_rate": 0.10821998817267889,
+          "n": 1691
+        },
+        {
+          "group": "7+",
+          "dropout_rate": 0.08215962441314555,
+          "n": 852
+        }
+      ],
+      "admission_grade_quartile": [
+        {
+          "group": "Q1 (lowest)",
+          "dropout_rate": 0.3951395139513951,
+          "n": 1111
+        },
+        {
+          "group": "Q2",
+          "dropout_rate": 0.3101893597835888,
+          "n": 1109
+        },
+        {
+          "group": "Q3",
+          "dropout_rate": 0.29336966394187103,
+          "n": 1101
+        },
+        {
+          "group": "Q4 (highest)",
+          "dropout_rate": 0.28558476881233,
+          "n": 1103
+        }
+      ],
+      "course": [
+        {
+          "group": "Nursing",
+          "dropout_rate": 0.15404699738903394,
+          "n": 766
+        },
+        {
+          "group": "Management",
+          "dropout_rate": 0.3526315789473684,
+          "n": 380
+        },
+        {
+          "group": "Social Service",
+          "dropout_rate": 0.18309859154929578,
+          "n": 355
+        },
+        {
+          "group": "Veterinary Nursing",
+          "dropout_rate": 0.26706231454005935,
+          "n": 337
+        },
+        {
+          "group": "Journalism and Communication",
+          "dropout_rate": 0.30513595166163143,
+          "n": 331
+        },
+        {
+          "group": "Advertising and Marketing Management",
+          "dropout_rate": 0.35447761194029853,
+          "n": 268
+        },
+        {
+          "group": "Management (evening)",
+          "dropout_rate": 0.5074626865671642,
+          "n": 268
+        },
+        {
+          "group": "Tourism",
+          "dropout_rate": 0.38095238095238093,
+          "n": 252
+        },
+        {
+          "group": "Communication Design",
+          "dropout_rate": 0.22566371681415928,
+          "n": 226
+        },
+        {
+          "group": "Animation and Multimedia Design",
+          "dropout_rate": 0.3813953488372093,
+          "n": 215
+        },
+        {
+          "group": "Social Service (evening)",
+          "dropout_rate": 0.3302325581395349,
+          "n": 215
+        },
+        {
+          "group": "Agronomy",
+          "dropout_rate": 0.4095238095238095,
+          "n": 210
+        },
+        {
+          "group": "Basic Education",
+          "dropout_rate": 0.4427083333333333,
+          "n": 192
+        },
+        {
+          "group": "Informatics Engineering",
+          "dropout_rate": 0.5411764705882353,
+          "n": 170
+        },
+        {
+          "group": "Equinculture",
+          "dropout_rate": 0.5531914893617021,
+          "n": 141
+        },
+        {
+          "group": "Oral Hygiene",
+          "dropout_rate": 0.38372093023255816,
+          "n": 86
+        },
+        {
+          "group": "Biofuel Production Technologies",
+          "dropout_rate": 0.6666666666666666,
+          "n": 12
+        }
+      ]
+    },
+    "top_correlations": [
+      {
+        "feature": "curricular_units_2nd_sem_grade",
+        "correlation": -0.5717922029440712
+      },
+      {
+        "feature": "curricular_units_2nd_sem_approved",
+        "correlation": -0.5695002441277345
+      },
+      {
+        "feature": "curricular_units_1st_sem_grade",
+        "correlation": -0.4806690652967378
+      },
+      {
+        "feature": "curricular_units_1st_sem_approved",
+        "correlation": -0.4791120338175431
+      },
+      {
+        "feature": "tuition_fees_up_to_date",
+        "correlation": -0.4291492845262436
+      },
+      {
+        "feature": "age_at_enrollment",
+        "correlation": 0.25421545776622384
+      },
+      {
+        "feature": "scholarship_holder",
+        "correlation": -0.24535391647177696
+      },
+      {
+        "feature": "debtor",
+        "correlation": 0.22940731153092553
+      },
+      {
+        "feature": "gender",
+        "correlation": 0.20398261053413852
+      },
+      {
+        "feature": "application_mode",
+        "correlation": 0.19845800311337772
+      }
+    ],
+    "outlier_share_top": {
+      "scholarship_holder": 0.24841772151898733,
+      "curricular_units_2nd_sem_grade": 0.1982368896925859,
+      "curricular_units_1st_sem_grade": 0.16410488245931285,
+      "previous_qualification": 0.15981012658227847,
+      "curricular_units_1st_sem_credited": 0.1304249547920434
+    },
+    "missing_values": 0,
+    "insights": [
+      "Class balance: 2209 graduates, 1421 dropouts and 794 still enrolled; the binary dropout rate is 32.1%.",
+      "Students whose tuition fees are not up to date have a 87% dropout rate versus 25% for those up to date.",
+      "Students with no approved units in the 2nd semester have a 84% dropout rate versus 8% for those with 7 or more approved units.",
+      "Scholarship holders: 12% dropout; non-holders: 39%.",
+      "Students aged 30+ at enrollment: 54% dropout versus 21% for those aged 19 or younger.",
+      "These are associations in historical data from one institution, not evidence of causation."
+    ]
+  }
+}

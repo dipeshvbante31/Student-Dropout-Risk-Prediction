@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Privacy{% endblock %}
+{% block content %}
+<h1>Privacy policy</h1>
+<section class="card"><h2>What is collected</h2>
+<ul><li><strong>Account data:</strong> name, email address and a salted password hash (never the password).</li>
+<li><strong>Student records:</strong> the feature values you enter or upload (enrollment, financial and academic fields), an optional student ID you choose, and the resulting predictions with the model version.</li>
+<li><strong>Batch metadata:</strong> file name, row counts, status, and for rejected rows only the row number, student ID and the reasons (not their values).</li>
+<li><strong>Audit entries:</strong> actions such as login, upload, prediction, export and deletion with time and IP address. No passwords or student values are written to audit entries or logs.</li></ul></section>
+<section class="card"><h2>Why and how it is handled</h2>
+<p>Data is used only to produce predictions, show your dashboards and keep a history. Uploaded CSV files are processed in memory and not stored as files. Data lives in the application's database; staff accounts see only their own records and administrators can see all records. Student identifiers are not placed in URLs other than internal numeric record ids.</p></section>
+<section class="card"><h2>Security measures</h2><p>Password hashing, CSRF protection, secure session cookies, parameterised database queries, upload size and type limits, and role-based access checks on the server.</p></section>
+<section class="card"><h2>Your control</h2><p>You can delete any student or batch, and delete your whole account with all associated data from your profile page.</p></section>
+<section class="card"><h2>Responsibilities and limits</h2>
+<p>Whoever uploads student data is responsible for having the right to process it and for following their institution's rules. This application does not claim compliance with any specific law or certification. Use real student data only on a deployment you have secured and approved.</p></section>
+{% endblock %}

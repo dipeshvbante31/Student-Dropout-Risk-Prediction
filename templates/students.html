@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge, empty %}
+{% block title %}Students{% endblock %}
+{% block content %}
+<div class="head-row"><h1>Students</h1>
+  <div><a class="btn" href="{{ url_for('predict.new') }}">Add student</a>
+  <a class="btn btn-outline" href="{{ url_for('students.export', kind='students') }}">Export CSV</a>
+  <a class="btn btn-outline" href="{{ url_for('students.export', kind='high-risk') }}">Export high-risk</a>
+  <a class="btn btn-outline" href="{{ url_for('students.export', kind='predictions') }}">Export all predictions</a></div></div>
+<form method="get" class="filters">
+  <label>Search ID<input type="search" name="q" value="{{ term }}" maxlength="64"></label>
+  <label>Risk<select name="risk"><option value="">All</option>{% for r in ('LOW','MEDIUM','HIGH') %}<option {{ 'selected' if risk==r }}>{{ r }}</option>{% endfor %}<option value="NONE" {{ 'selected' if risk=='NONE' }}>No prediction</option></select></label>
+  <label>Course<select name="course"><option value="">All</option>{% for c, n in courses %}<option value="{{ c }}" {{ 'selected' if course==c }}>{{ n }}</option>{% endfor %}</select></label>
+  <label>Sort<select name="sort"><option value="recent" {{ 'selected' if sort=='recent' }}>Recently updated</option><option value="risk" {{ 'selected' if sort=='risk' }}>Highest risk</option><option value="ref" {{ 'selected' if sort=='ref' }}>Student ID</option></select></label>
+  <button class="btn" type="submit">Apply</button>
+</form>
+{% if page.total == 0 %}
+  {{ empty('No student records available yet.' if not (term or risk or course) else 'No students match these filters.') }}
+{% else %}
+<div class="table-wrap"><table>
+  <thead><tr><th>Student ID</th><th>Course</th><th>Latest probability</th><th>Risk</th><th>Updated</th><th></th></tr></thead>
+  <tbody>{% for s, p in page.items %}
+    <tr><td><a href="{{ url_for('students.detail', student_id=s.id) }}">{{ s.student_ref }}</a></td>
+    <td>{{ course_names.get(s.course_code, 'Course ' ~ s.course_code) }}</td>
+    <td>{{ p.probability|pct if p else '-' }}</td><td>{{ badge(p.risk_level) if p else '-' }}</td><td>{{ s.updated_at|dt }}</td>
+    <td><a href="{{ url_for('predict.edit', student_id=s.id) }}">Edit</a></td></tr>
+  {% endfor %}</tbody>
+</table></div>
+{% include "_pager.html" %}
+{% endif %}
+{% endblock %}

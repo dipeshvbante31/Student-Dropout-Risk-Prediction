@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge %}
+{% block title %}{{ s.student_ref }}{% endblock %}
+{% block content %}
+<h1>Student {{ s.student_ref }}</h1>
+<p class="muted">Added {{ s.created_at|dt }}, last updated {{ s.updated_at|dt }}.</p>
+<div class="actions">
+  <a class="btn" href="{{ url_for('predict.edit', student_id=s.id) }}">Edit and re-predict</a>
+  <form class="inline" method="post" action="{{ url_for('students.repredict', student_id=s.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-outline" type="submit">Re-run with current model</button></form>
+  <form class="inline" method="post" action="{{ url_for('students.delete', student_id=s.id) }}" data-confirm="Delete this student and all of their predictions?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-danger" type="submit">Delete</button></form>
+</div>
+{% if latest %}
+<section class="card result result-{{ latest.risk_level|lower }}">
+  <h2>Current prediction</h2>
+  <div class="big">{{ latest.probability|pct }} {{ badge(latest.risk_level) }}</div>
+  <progress max="100" value="{{ (latest.probability*100)|round(1) }}"></progress>
+  <p>The model predicts a {{ latest.risk_level|lower }} dropout risk. This is an estimate, not a certainty.</p>
+  {% if latest.explanation %}
+  <div class="grid-2">
+    <div><h3>Contributed to a higher estimate</h3><ul class="factors">{% for c in latest.explanation.increase %}<li><span>{{ c.label }} = {{ c.value }}</span><b class="up">+{{ (c.delta*100)|round(1) }} pts</b></li>{% else %}<li class="muted">None noticeable</li>{% endfor %}</ul></div>
+    <div><h3>Contributed to a lower estimate</h3><ul class="factors">{% for c in latest.explanation.decrease %}<li><span>{{ c.label }} = {{ c.value }}</span><b class="down">{{ (c.delta*100)|round(1) }} pts</b></li>{% else %}<li class="muted">None noticeable</li>{% endfor %}</ul></div>
+  </div>
+  {% endif %}
+</section>
+{% else %}<div class="empty"><p>No predictions have been generated yet.</p></div>{% endif %}
+<section class="card">
+  <h2>Prediction history</h2>
+  {% if s.predictions %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Date</th><th>Probability</th><th>Risk</th><th>Model version</th><th>Source</th></tr></thead>
+    <tbody>{% for p in s.predictions %}<tr><td>{{ p.created_at|dt }}</td><td><a href="{{ url_for('predict.result', prediction_id=p.id) }}">{{ p.probability|pct }}</a></td><td>{{ badge(p.risk_level) }}</td><td>{{ p.model_version.version }}</td><td>{% if p.batch_id %}<a href="{{ url_for('batch.results', batch_id=p.batch_id) }}">Batch {{ p.batch_id }}</a>{% else %}Form{% endif %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}<p class="muted">No predictions have been generated yet.</p>{% endif %}
+</section>
+<section class="card">
+  <h2>Stored information</h2>
+  {% for grp in rows|groupby('group') %}
+    <h3>{{ grp.grouper }}</h3>
+    <dl class="kv">{% for r in grp.list %}<dt>{{ r.label }}</dt><dd>{{ r.value }}</dd>{% endfor %}</dl>
+  {% endfor %}
+</section>
+{% endblock %}

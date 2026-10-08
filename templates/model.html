@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import chart, stat %}
+{% block title %}Model{% endblock %}
+{% block content %}
+<h1>Model performance and monitoring</h1>
+<p class="muted">Performance is measured on a held-out test set ({{ m.n_test }} records) from the training dataset and may differ on new institutional data. Positive class = dropout.</p>
+<section class="stats">
+  {{ stat('Selected model', m.model_type) }}
+  {{ stat('Version', m.version) }}
+  {{ stat('Trained', m.trained_at[:10]) }}
+  {{ stat('Accuracy', m.metrics.accuracy|pct) }}
+  {{ stat('Precision', m.metrics.precision|pct) }}
+  {{ stat('Recall', m.metrics.recall|pct) }}
+  {{ stat('F1-score', m.metrics.f1|pct) }}
+  {{ stat('ROC-AUC', '%.3f'|format(m.metrics.roc_auc)) }}
+</section>
+<div class="grid-2">
+<section class="card"><h2>Dataset</h2>
+  <dl class="kv"><dt>Name</dt><dd>{{ m.dataset.name }}</dd><dt>Source</dt><dd><a href="{{ m.dataset.url }}" rel="noopener">{{ m.dataset.source }}</a></dd>
+  <dt>License</dt><dd>{{ m.dataset.license }}</dd><dt>Records</dt><dd>{{ m.dataset.rows }} (train {{ m.n_train }}, test {{ m.n_test }})</dd>
+  <dt>Input features</dt><dd>{{ m.n_features }} (plus {{ 10 }} engineered)</dd><dt>Missing values</dt><dd>{{ m.dataset.missing_values }}</dd>
+  <dt>Raw classes</dt><dd>{% for k, v in m.dataset.class_counts.items() %}{{ k }} {{ v }}{{ ', ' if not loop.last }}{% endfor %}</dd>
+  <dt>Binary target</dt><dd>{{ m.dataset.binary_target }}</dd><dt>File SHA-256</dt><dd><code class="wrap">{{ m.dataset.sha256 }}</code></dd></dl>
+  <p class="muted">{{ m.dataset.mirror_note }}</p></section>
+<section class="card"><h2>Confusion matrix (test set)</h2>
+  {% set cm = m.metrics.confusion_matrix %}
+  <table class="cm"><thead><tr><th></th><th>Predicted not dropout</th><th>Predicted dropout</th></tr></thead>
+  <tbody><tr><th>Actually not dropout</th><td>{{ cm.tn }}</td><td>{{ cm.fp }}</td></tr><tr><th>Actually dropout</th><td>{{ cm.fn }}</td><td>{{ cm.tp }}</td></tr></tbody></table>
+  <p class="muted">Decision threshold {{ m.config.decision_threshold }}. {{ cm.fn }} actual dropouts were missed and {{ cm.fp }} students were flagged without dropping out.</p></section>
+</div>
+<section class="card"><h2>Model comparison</h2>
+  <div class="table-wrap"><table><thead><tr><th>Model</th><th>CV F1</th><th>CV ROC-AUC</th><th>Test accuracy</th><th>Test precision</th><th>Test recall</th><th>Test F1</th><th>Test ROC-AUC</th></tr></thead>
+  <tbody>{% for r in m.comparison %}<tr {% if r.model == m.model_type %}class="selected"{% endif %}><td>{{ r.model }}{{ ' (selected)' if r.model == m.model_type }}</td><td>{{ '%.3f'|format(r.cv_f1) }}</td><td>{{ '%.3f'|format(r.cv_roc_auc) }}</td><td>{{ '%.3f'|format(r.test.accuracy) }}</td><td>{{ '%.3f'|format(r.test.precision) }}</td><td>{{ '%.3f'|format(r.test.recall) }}</td><td>{{ '%.3f'|format(r.test.f1) }}</td><td>{{ '%.3f'|format(r.test.roc_auc) }}</td></tr>{% endfor %}</tbody></table></div>
+  <p class="muted">Selection rule: {{ m.config.selection_rule }}. The test set was used only once, for the final report, so accuracy alone did not decide the choice.</p></section>
+<div class="grid-2">
+  {{ chart('m-roc', 'roc', m.metrics.roc_curve, '', 'ROC curve (test set)') }}
+  {{ chart('m-imp', 'hbar', imp, '', 'Feature importance (permutation, drop in test ROC-AUC)') }}
+</div>
+<section class="card"><h2>Group check by gender (test set)</h2>
+  <div class="table-wrap"><table><thead><tr><th>Group</th><th>Records</th><th>Actual dropout rate</th><th>Predicted dropout rate</th><th>Recall</th><th>Precision</th></tr></thead>
+  <tbody>{% for g, v in m.fairness_by_gender.items() %}<tr><td>{{ g }}</td><td>{{ v.n }}</td><td>{{ v.actual_dropout_rate|pct }}</td><td>{{ v.predicted_dropout_rate|pct }}</td><td>{{ v.recall|pct }}</td><td>{{ v.precision|pct }}</td></tr>{% endfor %}</tbody></table></div>
+  <p class="muted">The model uses demographic fields present in the public dataset. Review such differences before relying on predictions, and never use them to treat students differently.</p></section>
+
+<h2>Monitoring</h2>
+<section class="card">
+  <dl class="kv"><dt>Predictions stored</dt><dd>{{ n_preds }}</dd><dt>Recent predictions examined</dt><dd>{{ mon.n }}</dd>
+  <dt>Mean predicted probability (recent)</dt><dd>{{ mon.mean_prob|pct if mon.mean_prob is not none else '-' }}</dd><dt>Baseline (test set)</dt><dd>{{ mon.baseline_mean_prob|pct }}</dd>
+  <dt>CSV rows uploaded / rejected</dt><dd>{{ mon.batch_rows }} / {{ mon.batch_rejected }}</dd></dl>
+  {% for w in mon.warnings %}<div class="flash flash-warn">{{ w }}</div>{% endfor %}
+  {% if mon.n == 0 %}<p class="muted">Monitoring will appear after predictions exist.</p>
+  {% elif not mon.warnings %}<p class="muted">No warnings. This is a simple check (values outside the training range, shift in mean prediction, rejection rate), not full drift detection.</p>{% endif %}
+  {% if mon.out_of_range %}<h3>Inputs outside the training range</h3><ul>{% for o in mon.out_of_range[:5] %}<li>{{ o.feature }}: {{ o.n }} of {{ mon.n }} records ({{ o.share|pct }})</li>{% endfor %}</ul>{% endif %}
+</section>
+<section class="card"><h2>Model versions</h2><div class="table-wrap"><table><thead><tr><th>Version</th><th>Type</th><th>Trained</th><th>Registered</th><th>Active</th></tr></thead>
+  <tbody>{% for v in versions %}<tr><td>{{ v.version }}</td><td>{{ v.model_type }}</td><td>{{ v.trained_at|dt }}</td><td>{{ v.registered_at|dt }}</td><td>{{ 'Yes' if v.is_active else 'No' }}</td></tr>{% endfor %}</tbody></table></div>
+  <p class="muted">Every prediction and batch records the version that produced it, so historical results stay traceable when a new model is trained.</p></section>
+{% endblock %}

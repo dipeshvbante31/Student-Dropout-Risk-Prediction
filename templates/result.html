@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge %}
+{% block title %}Prediction result{% endblock %}
+{% block content %}
+<h1>Prediction for {{ s.student_ref }}</h1>
+<section class="card result result-{{ p.risk_level|lower }}">
+  <p class="lead">The model predicts a <strong>{{ p.risk_level|lower }}</strong> dropout risk.</p>
+  <div class="big">{{ p.probability|pct }} {{ badge(p.risk_level) }}</div>
+  <progress max="100" value="{{ (p.probability*100)|round(1) }}" aria-label="Estimated dropout probability"></progress>
+  <p class="muted">Estimated probability of dropout from the model (version {{ p.model_version.version }}), generated {{ p.created_at|dt }}. Predicted class: {{ 'at risk of dropout' if p.predicted_dropout else 'not predicted at risk' }}. Risk levels are communication thresholds (low below {{ low_pct }}%, medium below {{ med_pct }}%), not universal standards.</p>
+  {% if p.warnings %}<div class="flash flash-warn"><strong>Unusual input values:</strong> {{ p.warnings|join('; ') }}. The model may be less reliable outside its training range.</div>{% endif %}
+</section>
+{% if p.explanation %}
+<section class="grid-2">
+  <div class="card"><h2>Contributed to a higher estimate</h2>
+    {% if p.explanation.increase %}<ul class="factors">{% for c in p.explanation.increase %}<li><span>{{ c.label }} = {{ c.value }}</span><b class="up">+{{ (c.delta*100)|round(1) }} pts</b></li>{% endfor %}</ul>{% else %}<p class="muted">No single factor raised the estimate noticeably.</p>{% endif %}</div>
+  <div class="card"><h2>Contributed to a lower estimate</h2>
+    {% if p.explanation.decrease %}<ul class="factors">{% for c in p.explanation.decrease %}<li><span>{{ c.label }} = {{ c.value }}</span><b class="down">{{ (c.delta*100)|round(1) }} pts</b></li>{% endfor %}</ul>{% else %}<p class="muted">No single factor lowered the estimate noticeably.</p>{% endif %}</div>
+</section>
+<p class="muted">Method: each value is replaced in turn by a typical training value and the change in the model's probability is measured. These are model-based indicators and should not be interpreted as proof that a student will drop out, or as the cause of dropout.</p>
+{% endif %}
+<p><a class="btn" href="{{ url_for('students.detail', student_id=s.id) }}">Student profile and history</a>
+   <a class="btn btn-outline" href="{{ url_for('predict.new') }}">Another prediction</a></p>
+{% endblock %}

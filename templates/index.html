@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Identify students who may benefit from earlier support</h1>
+  <p class="lead">A machine-learning decision-support tool that estimates dropout risk from enrollment, financial and first-year academic information. Trained on a public higher-education dataset; every number you see comes from the trained model or your stored records.</p>
+  <p>
+    {% if current_user.is_authenticated %}
+      <a class="btn btn-lg" href="{{ url_for('predict.new') }}">Predict one student</a>
+      <a class="btn btn-lg btn-outline" href="{{ url_for('batch.upload') }}">Upload a CSV</a>
+    {% else %}
+      <a class="btn btn-lg" href="{{ url_for('auth.register') }}">Create an account</a>
+      <a class="btn btn-lg btn-outline" href="{{ url_for('auth.login') }}">Sign in</a>
+    {% endif %}
+  </p>
+</section>
+<section class="grid-3">
+  <article class="card"><h2>Individual prediction</h2><p>Enter one student's information and get an estimated probability, a risk level and the factors that contributed to the model's estimate.</p></article>
+  <article class="card"><h2>CSV batch prediction</h2><p>Download the template, fill in student rows, validate against the model's schema, predict, review results and download them. Every batch is stored with its model version.</p></article>
+  <article class="card"><h2>Transparent model</h2><p>Compare four algorithms, see held-out test metrics, feature importance, a group-wise check and basic input-drift warnings on the <a href="{{ url_for('insights.model') if current_user.is_authenticated else url_for('main.about') }}">model page</a>.</p></article>
+</section>
+<section class="card note">
+  <h2>How to read a prediction</h2>
+  <p>A result such as "the model predicts a high dropout risk" is a probability estimate learned from historical patterns. It does not mean a student will drop out, and it must never be used for disciplinary, admission or expulsion decisions. Its purpose is to help staff offer support sooner.</p>
+</section>
+{% endblock %}
